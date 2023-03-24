@@ -1,13 +1,12 @@
 import React, { useRef } from "react";
-import * as ChartModuleMore from "highcharts/highcharts-more.js";
-import HCSoldGauge from "highcharts/modules/solid-gauge";
+import HighchartsMore from 'highcharts/highcharts-more'
+import SolidGauge from 'highcharts/modules/solid-gauge'
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { colors } from "../../../theme/colors";
 
-// @ts-ignore
-ChartModuleMore(Highcharts)
-HCSoldGauge(Highcharts);
+HighchartsMore(Highcharts);
+SolidGauge(Highcharts);
 
 interface IGaugeOptions {
   title: string;
