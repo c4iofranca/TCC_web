@@ -5,6 +5,7 @@ export const colors = {
 
     // Charts
     chartBackground: "#727A8F",
+    colors: ['#36454F', '#F5F5F5', '#050A30'],
 
     // Gauge
     regularValue: '#D3D4D9',

@@ -5,6 +5,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
+    width: 70%;
 `;
 
 export const MiddleTop = styled.div`

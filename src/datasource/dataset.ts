@@ -7,8 +7,6 @@ import { GLOBAL_END_DATE, GLOBAL_START_DATE } from "../constants/Global";
 export const GetLatestValuesByTimestamp = async (tags: string[]) => {
   const body = {
     tags: tags,
-    startDate: GLOBAL_START_DATE,
-    endDate: GLOBAL_END_DATE,
   };
   try {
     const data = await API(Endpoints.API_ENDPOINT).post(
@@ -20,6 +18,27 @@ export const GetLatestValuesByTimestamp = async (tags: string[]) => {
   } catch (error) {
     console.log(
       "🚀 ~ file: dataset.ts:7 ~ GetLatestValuesByTimestamp ~ error:",
+      error
+    );
+  }
+};
+
+export const GetLatestValuesBetweenTimestamp = async (tags: string[]) => {
+  const body = {
+    tags,
+    startDate: GLOBAL_START_DATE,
+    endDate: GLOBAL_END_DATE,
+  };
+  try {
+    const data = await API(Endpoints.API_ENDPOINT).post(
+      Endpoints.GET_LATEST_VALUES_BETWEEN_TIMESTAMP,
+      body
+    )
+
+    return data;
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: dataset.ts:35 ~ GetLatestValuesBetweenTimestamp ~ error:",
       error
     );
   }
