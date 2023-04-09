@@ -34,29 +34,29 @@ import Manete from "../../features/Manete";
 export default function Dashboard() {
   const [currentTimeHorizon, setCurrentTimeHorizon] = useState<string>("daily");
 
-  // useEffect(() => {
-  //   const map = L.map("map").setView([51.505, -0.09], 6);
-  //   L.tileLayer(
-  //     "https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png",
-  //     {
-  //       maxZoom: 8,
-  //       minZoom: 6,
-  //     }
-  //   ).addTo(map);
+  useEffect(() => {
+    const map = L.map("map").setView([51.505, -0.09], 6);
+    L.tileLayer(
+      "https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png",
+      {
+        maxZoom: 8,
+        minZoom: 6,
+      }
+    ).addTo(map);
 
-  //   L.circle([51.508, -0.11], {
-  //     color: "#2A96F1",
-  //     fillColor: "#2A96F1",
-  //     fillOpacity: 1,
-  //     radius: 2000,
-  //   }).addTo(map);
-  //   L.circle([51.508, -0.11], {
-  //     color: "#2EE4F4",
-  //     fillColor: "#2EE4F4",
-  //     fillOpacity: 0.3,
-  //     radius: 22000,
-  //   }).addTo(map);
-  // });
+    L.circle([51.508, -0.11], {
+      color: "#2A96F1",
+      fillColor: "#2A96F1",
+      fillOpacity: 1,
+      radius: 2000,
+    }).addTo(map);
+    L.circle([51.508, -0.11], {
+      color: "#2EE4F4",
+      fillColor: "#2EE4F4",
+      fillOpacity: 0.3,
+      radius: 22000,
+    }).addTo(map);
+  });
 
   return (
     <Container>
