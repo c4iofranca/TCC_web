@@ -6,8 +6,8 @@ import { IConfig } from "../../../types/Gauge";
 const gaugeConfig: IConfig = {
   height: 180,
   width: 300,
-  center: ["50%", "65%"],
-  size: "135%",
+  center: ["50%", "55%"],
+  size: "95%",
   indicators: {
     good: {
       min: 60,
@@ -23,16 +23,16 @@ const gaugeConfig: IConfig = {
   pointerRadius: 14
 };
 
-export default function RateEvolution() {
+export default function DualGauge() {
   return (
     <Container>
       <div>
-        <span>Taxa de rotações do gerador a gás</span>
+        <span>Velocidade do Navio</span>
         <Gauge value={66} config={gaugeConfig} showDataLabels />
       </div>
 
       <div>
-        <span>Taxa de rotações da turbina a gás</span>
+        <span>Fluxo de Combustível</span>
         <Gauge value={66} config={gaugeConfig} showDataLabels />
       </div>
     </Container>

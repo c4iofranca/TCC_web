@@ -9,6 +9,9 @@ import {
   Dash,
   Header,
   HeaderTitle,
+  Infos,
+  InfosAlerts,
+  InfosButton,
   MainDash,
   TimeHorizon,
   UpperMain,
@@ -21,37 +24,39 @@ import { Card } from "../../features/Card";
 import PredictionCondition from "./PredictionCondition";
 import L from "leaflet";
 import * as geojson from "geojson";
-import RateEvolution from "./RateEvolution";
+import DualGauge from "./DualGauge";
 import Column from "../../features/Charts/Column";
 import Thick from "../../features/Thick";
 import { colors } from "../../theme/colors";
+import Propeller from "../../features/Propeller";
+import Manete from "../../features/Manete";
 
 export default function Dashboard() {
   const [currentTimeHorizon, setCurrentTimeHorizon] = useState<string>("daily");
 
-  useEffect(() => {
-    const map = L.map("map").setView([51.505, -0.09], 6);
-    L.tileLayer(
-      "https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png",
-      {
-        maxZoom: 8,
-        minZoom: 6,
-      }
-    ).addTo(map);
+  // useEffect(() => {
+  //   const map = L.map("map").setView([51.505, -0.09], 6);
+  //   L.tileLayer(
+  //     "https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png",
+  //     {
+  //       maxZoom: 8,
+  //       minZoom: 6,
+  //     }
+  //   ).addTo(map);
 
-    L.circle([51.508, -0.11], {
-      color: "#2A96F1",
-      fillColor: "#2A96F1",
-      fillOpacity: 1,
-      radius: 2000,
-    }).addTo(map);
-    L.circle([51.508, -0.11], {
-      color: "#2EE4F4",
-      fillColor: "#2EE4F4",
-      fillOpacity: 0.3,
-      radius: 22000,
-    }).addTo(map);
-  });
+  //   L.circle([51.508, -0.11], {
+  //     color: "#2A96F1",
+  //     fillColor: "#2A96F1",
+  //     fillOpacity: 1,
+  //     radius: 2000,
+  //   }).addTo(map);
+  //   L.circle([51.508, -0.11], {
+  //     color: "#2EE4F4",
+  //     fillColor: "#2EE4F4",
+  //     fillOpacity: 0.3,
+  //     radius: 22000,
+  //   }).addTo(map);
+  // });
 
   return (
     <Container>
@@ -60,6 +65,13 @@ export default function Dashboard() {
           Dashboard - Navy CODLAG Fragate Ship | Última atualização:{" "}
           {new Date().toLocaleString()}
         </HeaderTitle>
+        <Infos>
+          <InfosButton>Detalhes do Sistema de Propulsão</InfosButton>
+          <InfosAlerts>
+            <span style={{width: 20, padding: 2, borderRadius: 10, background: 'red', color: colors.BLACK, fontWeight: 'bold'}}>!</span>
+            <span>Alertas</span>
+          </InfosAlerts>
+        </Infos>
         <TimeHorizon>
           <ButtonTimeHorizon
             selected={currentTimeHorizon === "daily"}
@@ -236,9 +248,26 @@ export default function Dashboard() {
                 <Card>3</Card>
                 <Card>4</Card>
               </UpperMainRightTop>
+
               <UpperMainRightBottom>
-                <Card flex={2}>1</Card>
-                <Card flex={2}>2</Card>
+                <Card flex={2}>
+                  <DualGauge />
+                </Card>
+                <Card flex={2}>
+                  <div style={{flex: 1, padding: 12, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12}}>
+                    Posição do Manete
+                    <Manete />
+                  </div>
+                  <div style={{flex: 1, display: 'flex', flexDirection: 'column', padding: 12, justifyContent: "space-evenly"}}>
+                    <span>Torque do Hélice</span>
+                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-evenly'}}>
+                       <Propeller color={colors.WHITE_SYSTEM} label="BE" value={120} />
+                       <Propeller color={colors.WHITE_SYSTEM} label="BB" value={120} />
+                    </div>
+                   
+                  </div>
+                  
+                </Card>
               </UpperMainRightBottom>
             </UpperMainRight>
           </UpperMain>
@@ -255,7 +284,7 @@ export default function Dashboard() {
                   flexDirection: "column",
                 }}
               >
-                <RateEvolution />
+                <DualGauge />
 
                 <div
                   style={{

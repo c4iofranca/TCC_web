@@ -1,5 +1,5 @@
+import { colors } from "./../../theme/colors";
 import styled, { css } from "styled-components";
-import { colors } from "../../theme/colors";
 
 export const Container = styled.div`
   display: flex;
@@ -15,6 +15,24 @@ export const Header = styled.div`
 `;
 
 export const HeaderTitle = styled.div``;
+
+export const Infos = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+export const InfosButton = styled.button`
+  padding: 4px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 2px solid gainsboro;
+`;
+
+export const InfosAlerts = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
 
 export const TimeHorizon = styled.div`
   display: flex;
@@ -94,7 +112,7 @@ export const AsideDash = styled.div`
 
 export const AsideDashTop = styled.div`
   display: flex;
-  flex: 2;
+  flex: 5;
   position: relative;
 `;
 

@@ -16,7 +16,7 @@ export default function Column() {
       plotBackgroundImage: colors.TRANSPARENT,
       plotBorderWidth: 0,
       plotShadow: false,
-      width: 500
+      width: 450
     },
     title: {
       text: "",
