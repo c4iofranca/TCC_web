@@ -1,16 +1,12 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import LeftContent from './components/Content/Left'
-import MiddleContent from './components/Content/Middle'
-import RightContent from './components/Content/Right'
+import Dashboard from './components/Dashboard'
 
 export default function App() {
 
   return (
     <Container>
-      <LeftContent />
-      <MiddleContent />
-      <RightContent />
+      <Dashboard />
     </Container>
   )
 }

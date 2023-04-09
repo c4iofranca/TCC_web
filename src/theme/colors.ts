@@ -5,18 +5,24 @@ export const colors: Record<string, any> = {
 
     // Charts
     chartBackground: "#727A8F",
-    colors: ['#36454F', '#F5F5F5', '#050A30', "orange"],
+    colors: ['#298FE6', '#F5F5F5', '#050A30', "orange"],
 
     // Gauge
-    regularValue: '#D3D4D9',
-    mediumValue: '#ADAEB3',
-    criticalValue: '#55565B',
+    regularValue: '#32CD32',
+    mediumValue: '#FE3047',
 
     pointer: '#393A3F',
 
     decayed: '#D0342C',
     notDecayed: '#339900',
 
-    white: 'white',
+    WHITE: '#fff',
+    BLACK: '#000',
+    TRANSPARENT: 'transparent',
+    
+    // System
+    WHITE_SYSTEM: '#D9D9D9',
+    BLUE_SYSTEM : '#009EE0'
+    
 
 }

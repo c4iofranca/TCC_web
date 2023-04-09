@@ -4,34 +4,28 @@ import SolidGauge from 'highcharts/modules/solid-gauge'
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { colors } from "../../../theme/colors";
+import { IGaugeOptions } from "../../../types/Gauge";
 
 HighchartsMore(Highcharts);
 SolidGauge(Highcharts);
 
-interface IGaugeOptions {
-  title: string;
-  value: number;
-  seriesName: string;
-  tickInterval?: number;
-  tickAmount?: number;
-}
-
-export default function Gauge({ title, value, seriesName, tickAmount, tickInterval }: IGaugeOptions) {
+export default function Gauge({ config, value, title, showDataLabels }: IGaugeOptions) {
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
   const options: Highcharts.Options = {
     chart: {
-      backgroundColor: colors.chartBackground,
+      backgroundColor: colors.TRANSPARENT,
       type: "gauge",
-      plotBackgroundColor: colors.chartBackground,
-      plotBackgroundImage: colors.chartBackground,
+      plotBackgroundColor: colors.TRANSPARENT,
+      plotBackgroundImage: colors.TRANSPARENT,
       plotBorderWidth: 0,
       plotShadow: false,
-      height: "100%",
+      height: config?.height,
+      width: config?.width
     },
 
     title: {
-      text: title,
+      text: title || "",
       style: {
         fontSize: "12px",
         color: "white",
@@ -43,74 +37,61 @@ export default function Gauge({ title, value, seriesName, tickAmount, tickInterv
     },
 
     pane: {
-      startAngle: -150,
-      endAngle: 150,
+      startAngle: -130,
+      endAngle: 130,
       background: [],
-      center: ["50%", "50%"],
-      size: "85%",
+      center: config?.center || ['50%', '85%'],
+      size: config?.size,
     },
 
     yAxis: {
-      min: 0,
-      max: value*1.035,
-      tickPosition: "outside",
-      minorTickInterval: tickAmount,
-      tickInterval: tickInterval,
-      tickLength: 5,
-      tickWidth: 2,
+      min: config?.yAxisConfig?.min,
+      max: config?.yAxisConfig?.max,
+      lineWidth: 0,
+      minorTickInterval: null,
+      tickPixelInterval: 400,
+      tickLength: 3,
+      tickWidth: 0,
       labels: {
-        distance: 15,
-        style: {
-          fontSize: "11px",
-          color: "white",
-        },
+        enabled: false
       },
       plotBands: [
         {
-          from: 0,
-          to: value*0.75,
-          color: colors.regularValue,
-          thickness: 15,
+          from: config?.indicators?.good?.min,
+          to: config?.indicators?.good?.max,
+          color: config?.useThemeColor ? colors.WHITE_SYSTEM : colors.regularValue,
+          thickness: config?.thickness || 6,
         },
         {
-          from: value*0.75,
-          to: value*0.95,
-          color: colors.mediumValue,
-          thickness: 15,
-        },
-        {
-          from: value*0.95,
-          to: value*1.1,
-          color: colors.criticalValue,
-          thickness: 15,
+          from: config?.indicators?.bad?.min,
+          to: config?.indicators?.bad?.max,
+          color: config?.useThemeColor ? colors.WHITE_SYSTEM : colors.mediumValue,
+          thickness: config?.thickness || 6,
         },
       ],
     },
 
     series: [
       {
-        name: seriesName,
+        name: "",
         data: [value],
         type: 'gauge',
-        dataLabels: {
+        dataLabels: showDataLabels ? {
           format: "rpm",
-          padding: -5,
-          color: "white",
-          style: {
-            fontSize: "10px",
-            
-          },
+          padding: -5
+        } : {
+          enabled: false
         },
         dial: {
           radius: "70%",
           backgroundColor: colors.pointer,
-          baseWidth: 9,
-          baseLength: "0%",
+          baseWidth: config?.pointerRadius || 5,
+          baseLength: "20%",
           rearLength: "0%",
         },
         pivot: {
           backgroundColor: colors.pointer,
-          radius: 5,
+          radius: (config?.pointerRadius as number) - 5 || 3,
         },
       },
     ],
