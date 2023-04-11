@@ -59,13 +59,13 @@ export default function Gauge({ config, value, title, showDataLabels }: IGaugeOp
         {
           from: config?.indicators?.good?.min,
           to: config?.indicators?.good?.max,
-          color: config?.useThemeColor ? colors.WHITE_SYSTEM : colors.regularValue,
+          color: config?.useThemeColor ? colors.BLUE_SYSTEM : colors.regularValue,
           thickness: config?.thickness || 6,
         },
         {
           from: config?.indicators?.bad?.min,
           to: config?.indicators?.bad?.max,
-          color: config?.useThemeColor ? colors.WHITE_SYSTEM : colors.mediumValue,
+          color: config?.useThemeColor ? colors.BLUE_SYSTEM : colors.mediumValue,
           thickness: config?.thickness || 6,
         },
       ],
@@ -77,20 +77,21 @@ export default function Gauge({ config, value, title, showDataLabels }: IGaugeOp
         data: [value],
         type: 'gauge',
         dataLabels: showDataLabels ? {
-          format: "rpm",
-          padding: -5
+          format: config?.unit || '',
+          padding: 15,
+          borderWidth: 0
         } : {
           enabled: false
         },
         dial: {
           radius: "70%",
-          backgroundColor: colors.pointer,
+          backgroundColor: colors.GREY_SYSTEM,
           baseWidth: config?.pointerRadius || 5,
           baseLength: "20%",
           rearLength: "0%",
         },
         pivot: {
-          backgroundColor: colors.pointer,
+          backgroundColor: colors.GREY_SYSTEM,
           radius: (config?.pointerRadius as number) - 5 || 3,
         },
       },

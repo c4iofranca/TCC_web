@@ -25,17 +25,7 @@ const gaugeConfig: IConfig = {
 
 export default function DualGauge() {
   return (
-    <Container>
-      <div>
-        <span>Velocidade do Navio</span>
-        <Gauge value={66} config={gaugeConfig} showDataLabels />
-      </div>
-
-      <div>
-        <span>Fluxo de Combustível</span>
-        <Gauge value={66} config={gaugeConfig} showDataLabels />
-      </div>
-    </Container>
+    <Gauge value={66} config={gaugeConfig} showDataLabels />
   );
 }
 

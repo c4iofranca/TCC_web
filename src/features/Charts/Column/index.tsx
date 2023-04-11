@@ -16,7 +16,7 @@ export default function Column() {
       plotBackgroundImage: colors.TRANSPARENT,
       plotBorderWidth: 0,
       plotShadow: false,
-      width: 450
+      height: (9 / 16) * 100 + '%'
     },
     title: {
       text: "",
@@ -28,7 +28,7 @@ export default function Column() {
     yAxis: {
       min: 0,
       title: {
-        text: "Consumo Manual",
+        text: "",
       },
       gridLineWidth: 0.5,
       labels: {

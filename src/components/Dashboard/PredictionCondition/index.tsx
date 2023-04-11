@@ -137,7 +137,6 @@ export default function PredictionCondition() {
 
 const Container = styled.div`
   display: flex;
-  width: 70%;
   flex-direction: column;
   padding: 12px;
 `;

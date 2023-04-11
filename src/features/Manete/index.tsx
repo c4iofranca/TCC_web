@@ -1,8 +1,19 @@
 import React from "react";
+import { colors } from "../../theme/colors";
 
 export default function Manete() {
   return (
-    <div style={{display: 'flex'}}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
+        borderRightStyle: "dotted",
+        borderRightWidth: "thin",
+        borderRightColor: '#80808080',
+      }}
+    >
       <svg
         width="108"
         height="84"
@@ -16,7 +27,7 @@ export default function Manete() {
           width="16.9546"
           height="53.7262"
           fill="url(#pattern0)"
-          style={{transform: 'rotate(50deg)', transformOrigin: '50% 65%'}}
+          style={{ transform: "rotate(50deg)", transformOrigin: "50% 65%" }}
         />
         <rect
           x="0.666992"
@@ -64,7 +75,10 @@ export default function Manete() {
         <path
           d="M82 41C82 30.1261 77.6804 19.6976 69.9914 12.0086C62.3024 4.31963 51.8739 8.20955e-07 41 0C30.1261 -8.20955e-07 19.6976 4.31963 12.0086 12.0086C4.31963 19.6976 1.64191e-06 30.1261 0 41L10.564 41C10.564 32.9279 13.7706 25.1863 19.4785 19.4785C25.1863 13.7706 32.9279 10.564 41 10.564C49.0721 10.564 56.8137 13.7706 62.5215 19.4785C68.2294 25.1863 71.436 32.9279 71.436 41H82Z"
           stroke="#D9D9D9"
-          style={{transformOrigin: '10px 10px', transform: 'translate(-14px, 0px)'}}
+          style={{
+            transformOrigin: "10px 10px",
+            transform: "translate(-14px, 0px)",
+          }}
         />
       </svg>
     </div>

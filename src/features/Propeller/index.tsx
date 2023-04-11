@@ -9,8 +9,7 @@ interface IPropeller {
 export default function Propeller({ color, label, value }: IPropeller) {
   return (
     <div>
-      <span>{label}</span>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210.85 192.37" style={{margin: 10}}>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210.85 192.37" style={{margin: '20px 0 0 0'}}>
         <g id="Camada_2" data-name="Camada 2">
           <g id="Camada_1-2" data-name="Camada 1">
             <path
@@ -36,7 +35,7 @@ export default function Propeller({ color, label, value }: IPropeller) {
           </g>
         </g>
       </svg>
-      <span>{value} kN</span>
+      <span>{label}: {value} kN</span>
     </div>
   );
 }

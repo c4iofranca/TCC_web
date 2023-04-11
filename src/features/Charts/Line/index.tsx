@@ -19,7 +19,8 @@ export default function LineChart({ data }: ILineChartOptions) {
       plotBackgroundImage: colors.TRANSPARENT,
       plotBorderWidth: 0,
       plotShadow: false,
-      height: (9 / 16 * 100) + '%'
+      height: 300,
+      width: 370
     },
     title: {
       text: "",

@@ -4,7 +4,7 @@ interface IMinMaxValues {
 }
 
 interface IConfig {
-  height: number;
+  height: number | string;
   width: number;
   center: string[];
   size: string;
@@ -16,6 +16,7 @@ interface IConfig {
   thickness?: number;
   useThemeColor?: boolean;
   pointerRadius?: number;
+  unit?: string;
 }
 
 interface IGaugeOptions {

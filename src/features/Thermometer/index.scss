@@ -1,0 +1,128 @@
+
+@import url("https://fonts.googleapis.com/css?family=Jaldi&display=swap");
+
+#wrapper {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+p {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#info {
+  opacity: 0.2;
+  margin: 0;
+  text-align: center;
+}
+
+$TM-mainTint: #3d3d44;
+$TM-backgroundColor: transparent;
+$TM-borderSize: 3px;
+$TM-borderColor: white;
+$TM-width: 13px;
+$TM-height: 60px;
+$TM-bulbSize: $TM-width * 2;
+$TM-radius: 5px;
+$TM-graduationsStyle: 2px solid #81858D;
+$TM-bulbColor: #009EE0;
+$TM-mercuryColor:  $TM-bulbColor;
+
+
+$TM-tooltipColor: rgba(0, 0, 0, 0.7);
+$TM-tooltipSize: 1em;
+$TM-tooltipRadius: 5px;
+$TM-tooltipTopShift: 5px;
+$TM-tooltipVerticalPadding: 5px;
+$TM-tooltipHorizontalPadding: $TM-tooltipVerticalPadding * 2;
+$TM-tooltipLeftShift: 100%;
+$TM-tooltipArrowWidth: 1.5; 
+$TM-tooltipArrowHeight: 2.2; 
+
+@mixin border() {
+  border: $TM-borderSize solid $TM-borderColor;
+}
+
+
+#termometer {
+  width: $TM-width;
+  background: $TM-backgroundColor;
+  height: $TM-height;
+  position: relative;
+  @include border;
+  border-radius: $TM-radius;
+  z-index: 1;
+  margin-bottom: $TM-bulbSize;
+
+  &:before,
+  &:after {
+    position: absolute;
+    content: "";
+    border-radius: 50%;
+  }
+
+
+  &:before {
+    width: 100%;
+    height: $TM-bulbSize / 2 + $TM-borderSize;
+    bottom: $TM-borderSize;
+    background: $TM-backgroundColor;
+    z-index: -1;
+  }
+
+
+  &:after {
+    transform: translateX(-50%);
+    width: $TM-bulbSize;
+    height: $TM-bulbSize;
+    background-color: $TM-bulbColor;
+    bottom: -$TM-bulbSize + $TM-borderSize;
+    @include border;
+    z-index: -3;
+    left: 50%;
+  }
+
+  #graduations {
+    height: 59%;
+    top: 20%;
+    width: 50%;
+
+    &,
+    &:before {
+      position: absolute;
+      border-top: $TM-graduationsStyle;
+      border-bottom: $TM-graduationsStyle;
+    }
+
+    &:before {
+      content: "";
+      height: 34%;
+      width: 100%;
+      top: 32%;
+    }
+  }
+
+  #temperature {
+    bottom: 0;
+    background: $TM-mercuryColor;
+    width: 100%;
+    border-radius: $TM-radius;
+    background-size: 100% $TM-height;
+    transition: all 0.2s ease-in-out;
+
+    &,
+    &:before,
+    &:after {
+      position: absolute;
+    }
+  }
+}
+
+
+
+

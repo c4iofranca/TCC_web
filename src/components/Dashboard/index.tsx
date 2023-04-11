@@ -4,32 +4,61 @@ import {
   AsideDashBottom,
   AsideDashTop,
   BottomMain,
+  BottomMainLeft,
+  BottomMainRight,
   ButtonTimeHorizon,
+  CategoryLabel,
   Container,
   Dash,
+  Divider,
   Header,
   HeaderTitle,
   Infos,
   InfosAlerts,
-  InfosButton,
   MainDash,
+  ShipConfiguration,
+  ShipFlowContainer,
+  ShipFlowItem,
+  SubCategoryLabel,
   TimeHorizon,
   UpperMain,
   UpperMainLeft,
   UpperMainRight,
-  UpperMainRightBottom,
   UpperMainRightTop,
+  Value,
 } from "./styles";
 import { Card } from "../../features/Card";
 import PredictionCondition from "./PredictionCondition";
 import L from "leaflet";
-import * as geojson from "geojson";
-import DualGauge from "./DualGauge";
 import Column from "../../features/Charts/Column";
 import Thick from "../../features/Thick";
 import { colors } from "../../theme/colors";
 import Propeller from "../../features/Propeller";
 import Manete from "../../features/Manete";
+import { shipDetails, systemDetails } from "../../constants/ship";
+import { IConfig } from "../../types/Gauge";
+import Gauge from "../../features/Charts/Gauge";
+import ShipDetail from "../../features/ShipDetail";
+
+const gaugeConfig: IConfig = {
+  height: (9 / 16) * 100 + "%",
+  width: 300,
+  center: ["50%", "65%"],
+  size: "75%",
+  indicators: {
+    good: {
+      min: 60,
+      max: 100,
+    },
+  },
+  yAxisConfig: {
+    min: 60,
+    max: 100,
+  },
+  thickness: 18,
+  useThemeColor: true,
+  pointerRadius: 14,
+};
 
 export default function Dashboard() {
   const [currentTimeHorizon, setCurrentTimeHorizon] = useState<string>("daily");
@@ -62,13 +91,22 @@ export default function Dashboard() {
     <Container>
       <Header>
         <HeaderTitle>
-          Dashboard - Navy CODLAG Fragate Ship | Última atualização:{" "}
-          {new Date().toLocaleString()}
+          {`Dashboard - Navy CODLAG Fragate Ship > Sistema de Propulsão`}
         </HeaderTitle>
         <Infos>
-          <InfosButton>Detalhes do Sistema de Propulsão</InfosButton>
           <InfosAlerts>
-            <span style={{width: 20, padding: 2, borderRadius: 10, background: 'red', color: colors.BLACK, fontWeight: 'bold'}}>!</span>
+            <span
+              style={{
+                width: 20,
+                padding: 2,
+                borderRadius: 10,
+                background: "#D5D800",
+                color: colors.BLACK,
+                fontWeight: "bold",
+              }}
+            >
+              !
+            </span>
             <span>Alertas</span>
           </InfosAlerts>
         </Infos>
@@ -99,229 +137,146 @@ export default function Dashboard() {
           <UpperMain>
             <UpperMainLeft>
               <Card height="100%">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    width: "100%",
-                    gap: 12,
-                    padding: "12px 0",
-                  }}
-                >
-                  <p
-                    style={{
-                      borderLeft: `10px solid ${colors.BLUE_SYSTEM}`,
-                      paddingLeft: 10,
-                    }}
-                  >
-                    Características do Navio
-                  </p>
-                  <p
-                    style={{
-                      width: "inherit",
-                      textAlign: "initial",
-                      display: "flex",
-                      paddingLeft: 20,
-                    }}
-                  >
-                    <span style={{ width: "30%" }}>Comprimento O.A:</span>
-                    <span>144.6m</span>
-                  </p>
-                  <p
-                    style={{
-                      width: "inherit",
-                      textAlign: "initial",
-                      display: "flex",
-                      paddingLeft: 20,
-                    }}
-                  >
-                    <span style={{ width: "30%" }}>Boca O.A:</span>
-                    <span>19.7m</span>
-                  </p>
-                  <p
-                    style={{
-                      width: "inherit",
-                      textAlign: "initial",
-                      display: "flex",
-                      paddingLeft: 20,
-                    }}
-                  >
-                    <span style={{ width: "30%" }}>Calado O.A:</span>
-                    <span>8.7m</span>
-                  </p>
-                  <p
-                    style={{
-                      width: "inherit",
-                      textAlign: "initial",
-                      display: "flex",
-                      paddingLeft: 20,
-                    }}
-                  >
-                    <span style={{ width: "30%" }}>Deslocamento (FLDW):</span>
-                    <span>6700t</span>
-                  </p>
+                <ShipConfiguration>
+                  <CategoryLabel>Características do Navio</CategoryLabel>
+                  {shipDetails.map((detail) => {
+                    return (
+                      <SubCategoryLabel>
+                        <Value defineWidth>{detail.name}:</Value>
+                        <Value>{detail.value}</Value>
+                      </SubCategoryLabel>
+                    );
+                  })}
 
-                  <p
-                    style={{
-                      borderLeft: `10px solid ${colors.BLUE_SYSTEM}`,
-                      paddingLeft: 10,
-                      marginTop: 20,
-                    }}
-                  >
-                    Sistema de Propulsão
-                  </p>
-                  <p
-                    style={{
-                      width: "inherit",
-                      textAlign: "initial",
-                      display: "flex",
-                      paddingLeft: 20,
-                    }}
-                  >
-                    <span style={{ width: "30%" }}>Tipo:</span>
-                    <span>CODLAG</span>
-                  </p>
-                  <p
-                    style={{
-                      width: "inherit",
-                      textAlign: "initial",
-                      display: "flex",
-                      paddingLeft: 20,
-                    }}
-                  >
-                    <span style={{ width: "30%" }}>Turbina a Gás:</span>
-                    <span>1 x 32 MW</span>
-                  </p>
-                  <p
-                    style={{
-                      width: "inherit",
-                      textAlign: "initial",
-                      display: "flex",
-                      paddingLeft: 20,
-                    }}
-                  >
-                    <span style={{ width: "30%" }}>Motor Elétrico:</span>
-                    <span>2 x 2.5 MW</span>
-                  </p>
-                  <p
-                    style={{
-                      width: "inherit",
-                      textAlign: "initial",
-                      display: "flex",
-                      paddingLeft: 20,
-                    }}
-                  >
-                    <span style={{ width: "30%" }}>Gerador Diesel:</span>
-                    <span>4 x 2.15 MV</span>
-                  </p>
-                  <p
-                    style={{
-                      width: "inherit",
-                      textAlign: "initial",
-                      display: "flex",
-                      paddingLeft: 20,
-                    }}
-                  >
-                    <span style={{ width: "30%" }}>Bow Thrusters:</span>
-                    <span>1 x 1 MW</span>
-                  </p>
-                  <p
-                    style={{
-                      width: "inherit",
-                      textAlign: "initial",
-                      display: "flex",
-                      paddingLeft: 20,
-                    }}
-                  >
-                    <span style={{ width: "30%" }}>Tipo de Hélice:</span>
-                    <span>CPP</span>
-                  </p>
-                </div>
+                  <CategoryLabel>Sistema de Propulsão</CategoryLabel>
+                  {systemDetails.map((detail) => {
+                    return (
+                      <SubCategoryLabel>
+                        <Value defineWidth>{detail.name}:</Value>
+                        <Value>{detail.value}</Value>
+                      </SubCategoryLabel>
+                    );
+                  })}
+                </ShipConfiguration>
               </Card>
             </UpperMainLeft>
 
             <UpperMainRight>
               <UpperMainRightTop>
-                <Card flex={2}>1</Card>
-                <Card>2</Card>
-                <Card>3</Card>
-                <Card>4</Card>
+                <Card flex={4}>
+                  <PredictionCondition />
+                </Card>
+                <Card>
+                  <ShipFlowContainer>
+                    <ShipFlowItem>
+                      <Thick label="Controle de Injeção da Turbina" />
+                      <Gauge
+                        value={66}
+                        config={{ ...gaugeConfig, unit: "%" }}
+                        showDataLabels
+                      />
+                    </ShipFlowItem>
+                    <Divider />
+                    <ShipFlowItem>
+                      <Thick label="Fluxo de Combustível" />
+                      <Gauge
+                        value={66}
+                        config={{ ...gaugeConfig, unit: "kg/s" }}
+                        showDataLabels
+                      />
+                    </ShipFlowItem>
+                  </ShipFlowContainer>
+                </Card>
               </UpperMainRightTop>
-
-              <UpperMainRightBottom>
-                <Card flex={2}>
-                  <DualGauge />
-                </Card>
-                <Card flex={2}>
-                  <div style={{flex: 1, padding: 12, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12}}>
-                    Posição do Manete
-                    <Manete />
-                  </div>
-                  <div style={{flex: 1, display: 'flex', flexDirection: 'column', padding: 12, justifyContent: "space-evenly"}}>
-                    <span>Torque do Hélice</span>
-                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-evenly'}}>
-                       <Propeller color={colors.WHITE_SYSTEM} label="BE" value={120} />
-                       <Propeller color={colors.WHITE_SYSTEM} label="BB" value={120} />
-                    </div>
-                   
-                  </div>
-                  
-                </Card>
-              </UpperMainRightBottom>
             </UpperMainRight>
           </UpperMain>
 
           <BottomMain>
-            <Card>
-              <PredictionCondition />
-
-              <div
-                style={{
-                  width: "40%",
-                  display: "flex",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                }}
-              >
-                <DualGauge />
-
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    margin: "auto",
-                  }}
-                >
-                  <span>Milhas Viajadas: 160 milhas</span>
-                  <span>Horas no Mar: 600h</span>
-                </div>
-                <div style={{ display: "flex", flex: 1 }}>
+            <BottomMainLeft>
+              <Card height="100%">
+                <ShipConfiguration style={{ gap: 28 }}>
                   <div
                     style={{
-                      maxWidth: "30%",
+                      width: "inherit",
+                      textAlign: "initial",
                       display: "flex",
                       flexDirection: "column",
-                      justifyContent: "center",
+                      gap: 8,
                     }}
                   >
-                    <span style={{ fontSize: 18 }}>
-                      Consumo Total de Combustível
+                    <CategoryLabel>Consumo Total de Combustível</CategoryLabel>
+                    <span
+                      style={{ textAlign: "center", padding: 12, fontSize: 24 }}
+                    >
+                      310 kT
                     </span>
-                    <span style={{ fontSize: 26 }}>310kT</span>
                   </div>
 
-                  <Column />
-                </div>
-              </div>
+                  <div
+                    style={{
+                      width: "inherit",
+                      textAlign: "initial",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <CategoryLabel>Consumo Mensal</CategoryLabel>
+                    <Column />
+                  </div>
 
-              <Thick label="Overview" />
-            </Card>
+                  <div
+                    style={{
+                      width: "inherit",
+                      textAlign: "initial",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <CategoryLabel>Navegação</CategoryLabel>
+                    <SubCategoryLabel>
+                      <Value defineWidth>Milhas Viajadas:</Value>
+                      <Value>160 milhas</Value>
+                    </SubCategoryLabel>
+                    <SubCategoryLabel>
+                      <Value defineWidth>Horas no Mar:</Value>
+                      <Value>600h</Value>
+                    </SubCategoryLabel>
+                  </div>
+                </ShipConfiguration>
+              </Card>
+            </BottomMainLeft>
+
+            <BottomMainRight>
+              <Card height="100%">
+                <div style={{ width: "100%", padding: 12 }}>
+                  <ShipDetail />
+                </div>
+              </Card>
+            </BottomMainRight>
           </BottomMain>
         </MainDash>
 
         <AsideDash>
+          <AsideDashBottom>
+            <Card>
+              <div
+                style={{
+                  flex: 1,
+                }}
+              >
+                <Thick label="Posição da Manete" />
+                <Manete />
+              </div>
+              <div>
+                <Thick label="Controle de Injeção da Turbina" />
+                <Gauge
+                  value={66}
+                  config={{ ...gaugeConfig, unit: "%", width: 250 }}
+                  showDataLabels
+                />
+              </div>
+            </Card>
+          </AsideDashBottom>
           <AsideDashTop>
             <Card>
               <div style={{ width: "100%" }}>
@@ -391,55 +346,34 @@ export default function Dashboard() {
           </AsideDashTop>
           <AsideDashBottom>
             <Card>
-              <Thick label="Estado do Mar e Condições do Tempo" />
+              <Thick label="Torque do Hélice" />
               <div
                 style={{
+                  flex: 1,
                   display: "flex",
                   flexDirection: "column",
-                  padding: "40px 20px",
-                  gap: 12,
+                  padding: 18,
+                  justifyContent: "space-evenly",
                 }}
               >
-                <p
+                <div
                   style={{
-                    width: "inherit",
-                    textAlign: "initial",
                     display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-evenly",
                   }}
                 >
-                  <span>Altura Significativa das Ondas (Hs):</span>
-                  <span>1.20m</span>
-                </p>
-                <p
-                  style={{
-                    width: "inherit",
-                    textAlign: "initial",
-                    display: "flex",
-                  }}
-                >
-                  <span>Profundidade:</span>
-                  <span>50 pés</span>
-                </p>
-                <p
-                  style={{
-                    width: "inherit",
-                    textAlign: "initial",
-                    display: "flex",
-                  }}
-                >
-                  <span>Correntes:</span>
-                  <span>1 nós</span>
-                </p>
-                <p
-                  style={{
-                    width: "inherit",
-                    textAlign: "initial",
-                    display: "flex",
-                  }}
-                >
-                  <span>Vento:</span>
-                  <span>5 bf</span>
-                </p>
+                  <Propeller
+                    color={colors.WHITE_SYSTEM}
+                    label="BE"
+                    value={120}
+                  />
+                  <Propeller
+                    color={colors.WHITE_SYSTEM}
+                    label="BB"
+                    value={120}
+                  />
+                </div>
               </div>
             </Card>
           </AsideDashBottom>

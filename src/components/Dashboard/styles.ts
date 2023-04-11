@@ -78,8 +78,18 @@ export const UpperMain = styled.div`
 export const UpperMainLeft = styled.div`
   flex: 1;
 `;
+
+export const ShipConfiguration = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 12px;
+  padding: 12px 0px;
+`;
+
 export const UpperMainRight = styled.div`
-  flex: 2;
+  flex: 4;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -90,6 +100,12 @@ export const UpperMainRightTop = styled.div`
   display: flex;
   gap: 12px;
 `;
+
+export const ShipFlowContainer = styled.div``;
+export const ShipFlowItem = styled.div`
+  position: relative;
+`;
+
 export const UpperMainRightBottom = styled.div`
   flex: 1;
   display: flex;
@@ -97,10 +113,18 @@ export const UpperMainRightBottom = styled.div`
 `;
 
 export const BottomMain = styled.div`
-  flex: 1;
+  flex: 2;
   display: flex;
   width: 100%;
   position: relative;
+  gap: 12px;
+`;
+
+export const BottomMainLeft = styled.div`
+  flex: 1;
+`;
+export const BottomMainRight = styled.div`
+  flex: 4;
 `;
 
 export const AsideDash = styled.div`
@@ -120,4 +144,30 @@ export const AsideDashBottom = styled.div`
   display: flex;
   flex: 1;
   position: relative;
+`;
+
+// Shared
+export const CategoryLabel = styled.p`
+  border-left: 10px solid ${colors.BLUE_SYSTEM};
+  padding-left: 12px;
+`;
+export const SubCategoryLabel = styled.p`
+  width: inherit;
+  text-align: initial;
+  display: flex;
+  padding-left: 20px;
+`;
+export const Value = styled.span.attrs(
+  (props: { defineWidth?: boolean }) => props
+)`
+  width: ${(props) => (props.defineWidth ? "50%" : "initial")};
+`;
+
+export const Divider = styled.div`
+  width: 80%;
+  margin: auto;
+  border-bottom-style: dotted;
+  border-bottom-width: 2px;
+  border-bottom-color: grey;
+  opacity: 0.5;
 `;

@@ -22,7 +22,8 @@ export const colors = {
     
     // System
     WHITE_SYSTEM: '#D9D9D9',
-    BLUE_SYSTEM : '#009EE0'
+    BLUE_SYSTEM : '#009EE0',
+    GREY_SYSTEM: '#81858D'
     
 
 }
