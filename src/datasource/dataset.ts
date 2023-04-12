@@ -33,7 +33,7 @@ export const GetLatestValuesBetweenTimestamp = async (tags: string[]) => {
     const data = await API(Endpoints.API_ENDPOINT).post(
       Endpoints.GET_LATEST_VALUES_BETWEEN_TIMESTAMP,
       body
-    )
+    );
 
     return data;
   } catch (error) {
@@ -43,3 +43,20 @@ export const GetLatestValuesBetweenTimestamp = async (tags: string[]) => {
     );
   }
 };
+
+export const GetLimits = async () => {
+  try {
+    return await API(Endpoints.API_ENDPOINT).get(Endpoints.GET_LIMITS);
+  } catch (error) {
+    console.log("🚀 ~ file: dataset.ts:50 ~ GetLimits ~ error:", error);
+  }
+};
+
+export const GetCurrentValues = async () => {
+  try {
+    return await API(Endpoints.API_ENDPOINT).get(Endpoints.GET_CURRENT_VALUES);
+  } catch (error) {
+    console.log("🚀 ~ file: dataset.ts:59 ~ GetCurrentValues ~ error:", error)
+    
+  }
+}

@@ -12,7 +12,7 @@ interface IConfig {
     good?: IMinMaxValues;
     bad?: IMinMaxValues;
   };
-  yAxisConfig: IMinMaxValues;
+  yAxisMax?: number;
   thickness?: number;
   useThemeColor?: boolean;
   pointerRadius?: number;

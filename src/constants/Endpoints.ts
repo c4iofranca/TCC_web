@@ -7,3 +7,5 @@ export const API_ENDPOINT = BASE_URL + API_PREFIX;
 export const GET_LATEST_VALUES_BY_TIMESTAMP = '/dataset/latest';
 export const GET_LATEST_VALUES_BETWEEN_TIMESTAMP = '/dataset/latest/multiple';
 export const GET_PREDICT_OUTPUTS = '/predict';
+export const GET_LIMITS = '/dataset/limits';
+export const GET_CURRENT_VALUES = '/dataset/currentValues';

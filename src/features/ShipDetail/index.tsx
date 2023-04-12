@@ -4,6 +4,12 @@ import Column from "../Charts/Column";
 import { IConfig } from "../../types/Gauge";
 import { colors } from "../../theme/colors";
 import Thermometer from "../Thermometer";
+import { ILimits } from "../../types/Limits";
+
+interface IShipDetail {
+  limits: ILimits | null;
+  currentValues: ICurrentValues | null;
+}
 
 // RPM Gerador
 const gaugeConfig: IConfig = {
@@ -17,16 +23,12 @@ const gaugeConfig: IConfig = {
       max: 100,
     },
   },
-  yAxisConfig: {
-    min: 60,
-    max: 100,
-  },
   thickness: 10,
   useThemeColor: true,
   pointerRadius: 10,
 };
 
-export default function ShipDetail() {
+export default function ShipDetail({ currentValues, limits }: IShipDetail) {
   return (
     <svg
       width="1003"
@@ -77,55 +79,92 @@ export default function ShipDetail() {
         stroke-width="1.5"
       />
 
-      <text x={40} y={125} fontSize={12} fill={colors.WHITE_SYSTEM}>RPM Gerador</text>
+      <text x={40} y={125} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        RPM Gerador
+      </text>
       <foreignObject className="node" x={0} y={95} width={150} height={120}>
         <Gauge
-          value={66}
-          config={{ ...gaugeConfig, unit: "rpm" }}
+          value={currentValues?.GG_rpm as number}
+          config={{
+            ...gaugeConfig,
+            unit: "rpm",
+            yAxisMax: (limits?.gauges?.max_gg_rpm as number) * 1.2,
+          }}
           showDataLabels
         />
       </foreignObject>
 
       <foreignObject x={220} y={115} width={40} height={120}>
-        <Thermometer max={327} value={288} />
+        <Thermometer
+          max={(limits?.thermometers?.max_in_temp as number) * 1.2}
+          value={currentValues?.GT_C_airIn_temp as number}
+        />
       </foreignObject>
-      <text x={220} y={225} fontSize={12} fill={colors.WHITE_SYSTEM}>Entrada</text>
+      <text x={220} y={225} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        Entrada
+      </text>
 
-      <text x={270} y={125} fontSize={12} fill={colors.WHITE_SYSTEM}>Compressor GT</text>
-      <text x={280} y={165} fontSize={12} fill={colors.WHITE_SYSTEM}>Temperatura</text>
+      <text x={270} y={125} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        Compressor GT
+      </text>
+      <text x={280} y={165} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        Temperatura
+      </text>
 
       <foreignObject x={360} y={115} width={40} height={120}>
-        <Thermometer max={327} value={288} />
+        <Thermometer
+          max={(limits?.thermometers?.max_out_temp as number) * 1.2}
+          value={currentValues?.GT_C_airOut_temp as number}
+        />
       </foreignObject>
-      <text x={360} y={225} fontSize={12} fill={colors.WHITE_SYSTEM}>Saída</text>
+      <text x={360} y={225} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        Saída
+      </text>
 
-      <text x={542} y={100} fontSize={12} fill={colors.WHITE_SYSTEM}>Turbina AP</text>
+      <text x={542} y={100} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        Turbina AP
+      </text>
       <foreignObject x={555} y={115} width={40} height={120}>
-        <Thermometer max={327} value={288} />
+        <Thermometer
+          max={(limits?.thermometers?.max_turbine_out_temp as number) * 1.2}
+          value={currentValues?.HP_T_exit_temp as number}
+        />
       </foreignObject>
-      <text x={560} y={225} fontSize={12} fill={colors.WHITE_SYSTEM}>Saída</text>
+      <text x={560} y={225} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        Saída
+      </text>
 
-      <text x={700} y={125} fontSize={12} fill={colors.WHITE_SYSTEM}>Torque Turbina</text>
+      <text x={700} y={125} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        Torque Turbina
+      </text>
       <foreignObject className="node" x={665} y={95} width={150} height={120}>
         <Gauge
-          value={66}
-          config={{ ...gaugeConfig, unit: "kN m" }}
+          value={currentValues?.GT_shaft_torque as number}
+          config={{
+            ...gaugeConfig,
+            unit: "kN m",
+            yAxisMax: (limits?.gauges?.max_gt_shaft_torque as number) * 1.2,
+          }}
           showDataLabels
         />
       </foreignObject>
 
-      <text x={880} y={125} fontSize={12} fill={colors.WHITE_SYSTEM}>RPM Turbina</text>
+      <text x={880} y={125} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        RPM Turbina
+      </text>
       <foreignObject className="node" x={840} y={95} width={150} height={120}>
         <Gauge
-          value={66}
-          config={{ ...gaugeConfig, unit: "kN m" }}
+          value={currentValues?.GT_rpm as number}
+          config={{
+            ...gaugeConfig,
+            unit: "kN m",
+            yAxisMax: (limits?.gauges?.max_gt_rpm as number) * 1.2,
+          }}
           showDataLabels
         />
       </foreignObject>
 
       <rect height={100} width={2} fill={colors.BLACK} opacity={0.1} />
-
-      
     </svg>
   );
 }

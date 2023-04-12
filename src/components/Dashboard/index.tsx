@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   AsideDash,
   AsideDashBottom,
@@ -39,6 +39,8 @@ import { shipDetails, systemDetails } from "../../constants/ship";
 import { IConfig } from "../../types/Gauge";
 import Gauge from "../../features/Charts/Gauge";
 import ShipDetail from "../../features/ShipDetail";
+import { ILimits } from "../../types/Limits";
+import { GetCurrentValues, GetLimits } from "../../datasource/dataset";
 
 const gaugeConfig: IConfig = {
   height: (9 / 16) * 100 + "%",
@@ -51,10 +53,6 @@ const gaugeConfig: IConfig = {
       max: 100,
     },
   },
-  yAxisConfig: {
-    min: 60,
-    max: 100,
-  },
   thickness: 18,
   useThemeColor: true,
   pointerRadius: 14,
@@ -62,30 +60,74 @@ const gaugeConfig: IConfig = {
 
 export default function Dashboard() {
   const [currentTimeHorizon, setCurrentTimeHorizon] = useState<string>("daily");
+  const [limits, setLimits] = useState<ILimits | null>(null);
+  const [currentValues, setCurrentValues] = useState<ICurrentValues | null>(null);
+  const firstRender = useRef(true);
+
+  const getLimits = async () => {
+    try {
+      const response = await GetLimits();
+
+      if (response) {
+        setLimits(response.data);
+      }
+    } catch (error) {
+      console.log("🚀 ~ file: index.tsx:72 ~ getLimits ~ error:", error);
+    }
+  };
+
+  const getCurrentValues = async () => {
+    try {
+      const response = await GetCurrentValues();
+
+      if (response) {
+        setCurrentValues(response.data);
+      }
+    } catch (error) {
+      console.log("🚀 ~ file: index.tsx:87 ~ getCurrentValues ~ error:", error);
+    }
+  };
 
   useEffect(() => {
-    const map = L.map("map").setView([51.505, -0.09], 6);
-    L.tileLayer(
-      "https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png",
-      {
-        maxZoom: 8,
-        minZoom: 6,
-      }
-    ).addTo(map);
+    getLimits();
+    getCurrentValues();
 
-    L.circle([51.508, -0.11], {
-      color: "#2A96F1",
-      fillColor: "#2A96F1",
-      fillOpacity: 1,
-      radius: 2000,
-    }).addTo(map);
-    L.circle([51.508, -0.11], {
-      color: "#2EE4F4",
-      fillColor: "#2EE4F4",
-      fillOpacity: 0.3,
-      radius: 22000,
-    }).addTo(map);
-  });
+    const interval = setInterval(() => {
+      getLimits();
+      getCurrentValues()
+    }, 180000)
+
+    return () => clearInterval(interval)
+  }, []);
+
+  useEffect(() => {
+    if (firstRender.current) {
+      const map = L.map("map").setView([51.505, -0.09], 6);
+      L.tileLayer(
+        "https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png",
+        {
+          maxZoom: 8,
+          minZoom: 6,
+        }
+      ).addTo(map);
+
+      L.circle([51.508, -0.11], {
+        color: "#2A96F1",
+        fillColor: "#2A96F1",
+        fillOpacity: 1,
+        radius: 2000,
+      }).addTo(map);
+      L.circle([51.508, -0.11], {
+        color: "#2EE4F4",
+        fillColor: "#2EE4F4",
+        fillOpacity: 0.3,
+        radius: 22000,
+      }).addTo(map);
+
+      firstRender.current = false;
+      return;
+    }
+  }, []);
 
   return (
     <Container>
@@ -171,8 +213,8 @@ export default function Dashboard() {
                     <ShipFlowItem>
                       <Thick label="Controle de Injeção da Turbina" />
                       <Gauge
-                        value={66}
-                        config={{ ...gaugeConfig, unit: "%" }}
+                        value={currentValues?.T_inj_control as number}
+                        config={{ ...gaugeConfig, unit: "%", yAxisMax: (limits?.gauges?.max_inj_control as number) * 1.2 }}
                         showDataLabels
                       />
                     </ShipFlowItem>
@@ -180,8 +222,8 @@ export default function Dashboard() {
                     <ShipFlowItem>
                       <Thick label="Fluxo de Combustível" />
                       <Gauge
-                        value={66}
-                        config={{ ...gaugeConfig, unit: "kg/s" }}
+                        value={currentValues?.fuel_flow as number}
+                        config={{ ...gaugeConfig, unit: "kg/s", yAxisMax: (limits?.gauges?.max_fuel_flow as number) * 1.2 }}
                         showDataLabels
                       />
                     </ShipFlowItem>
@@ -249,7 +291,7 @@ export default function Dashboard() {
             <BottomMainRight>
               <Card height="100%">
                 <div style={{ width: "100%", padding: 12 }}>
-                  <ShipDetail />
+                  <ShipDetail currentValues={currentValues} limits={limits} />
                 </div>
               </Card>
             </BottomMainRight>
@@ -265,13 +307,13 @@ export default function Dashboard() {
                 }}
               >
                 <Thick label="Posição da Manete" />
-                <Manete />
+                <Manete value={currentValues?.lever_position as number} />
               </div>
               <div>
-                <Thick label="Controle de Injeção da Turbina" />
+                <Thick label="Velocidade do Navio" />
                 <Gauge
-                  value={66}
-                  config={{ ...gaugeConfig, unit: "%", width: 250 }}
+                  value={currentValues?.ship_speed as number}
+                  config={{ ...gaugeConfig, unit: "nós", width: 250, yAxisMax: 27*1.2 }}
                   showDataLabels
                 />
               </div>
@@ -366,12 +408,12 @@ export default function Dashboard() {
                   <Propeller
                     color={colors.WHITE_SYSTEM}
                     label="BE"
-                    value={120}
+                    value={currentValues?.S_prplr_torque as number}
                   />
                   <Propeller
                     color={colors.WHITE_SYSTEM}
                     label="BB"
-                    value={120}
+                    value={currentValues?.P_prplr_torque as number}
                   />
                 </div>
               </div>

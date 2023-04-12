@@ -11,7 +11,6 @@ SolidGauge(Highcharts);
 
 export default function Gauge({ config, value, title, showDataLabels }: IGaugeOptions) {
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
-
   const options: Highcharts.Options = {
     chart: {
       backgroundColor: colors.TRANSPARENT,
@@ -45,8 +44,8 @@ export default function Gauge({ config, value, title, showDataLabels }: IGaugeOp
     },
 
     yAxis: {
-      min: config?.yAxisConfig?.min,
-      max: config?.yAxisConfig?.max,
+      min: 0,
+      max: config?.yAxisMax,
       lineWidth: 0,
       minorTickInterval: null,
       tickPixelInterval: 400,
@@ -57,15 +56,9 @@ export default function Gauge({ config, value, title, showDataLabels }: IGaugeOp
       },
       plotBands: [
         {
-          from: config?.indicators?.good?.min,
-          to: config?.indicators?.good?.max,
+          from: 0,
+          to: config?.yAxisMax,
           color: config?.useThemeColor ? colors.BLUE_SYSTEM : colors.regularValue,
-          thickness: config?.thickness || 6,
-        },
-        {
-          from: config?.indicators?.bad?.min,
-          to: config?.indicators?.bad?.max,
-          color: config?.useThemeColor ? colors.BLUE_SYSTEM : colors.mediumValue,
           thickness: config?.thickness || 6,
         },
       ],

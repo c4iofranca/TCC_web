@@ -1,7 +1,12 @@
 import React from "react";
 import { colors } from "../../theme/colors";
 
-export default function Manete() {
+interface IManete { 
+  value: number; 
+}
+
+export default function Manete({ value }: IManete) {
+  const angularPosition = -90 + (177*value)/9.3
   return (
     <div
       style={{
@@ -27,7 +32,7 @@ export default function Manete() {
           width="16.9546"
           height="53.7262"
           fill="url(#pattern0)"
-          style={{ transform: "rotate(50deg)", transformOrigin: "50% 65%" }}
+          style={{ transform: `rotate(${angularPosition}deg)`, transformOrigin: "50% 65%" }}
         />
         <rect
           x="0.666992"
