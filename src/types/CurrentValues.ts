@@ -19,3 +19,5 @@ interface ICurrentValues {
   GT_C_decay_coef: number;
   GT_T_decay_coef: number;
 }
+
+export type { ICurrentValues }
