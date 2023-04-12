@@ -41,6 +41,7 @@ import Gauge from "../../features/Charts/Gauge";
 import ShipDetail from "../../features/ShipDetail";
 import { ILimits } from "../../types/Limits";
 import { GetCurrentValues, GetLimits } from "../../datasource/dataset";
+import { ICurrentValues } from "../../types/CurrentValues";
 
 const gaugeConfig: IConfig = {
   height: (9 / 16) * 100 + "%",

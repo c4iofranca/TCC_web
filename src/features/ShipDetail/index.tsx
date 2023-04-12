@@ -5,6 +5,7 @@ import { IConfig } from "../../types/Gauge";
 import { colors } from "../../theme/colors";
 import Thermometer from "../Thermometer";
 import { ILimits } from "../../types/Limits";
+import { ICurrentValues } from "../../types/CurrentValues";
 
 interface IShipDetail {
   limits: ILimits | null;
