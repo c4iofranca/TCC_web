@@ -16,6 +16,8 @@ import {
   Infos,
   InfosAlerts,
   MainDash,
+  Modal,
+  Overlay,
   ShipConfiguration,
   ShipFlowContainer,
   ShipFlowItem,
@@ -42,6 +44,9 @@ import ShipDetail from "../../features/ShipDetail";
 import { ILimits } from "../../types/Limits";
 import { GetCurrentValues, GetLimits } from "../../datasource/dataset";
 import { ICurrentValues } from "../../types/CurrentValues";
+import { GetLatestValuesBetweenTimestamp } from "../../datasource/dataset";
+import { ITrends } from "../../types/Trends";
+import LineChart from "../../features/Charts/Line";
 
 const gaugeConfig: IConfig = {
   height: (9 / 16) * 100 + "%",
@@ -62,7 +67,13 @@ const gaugeConfig: IConfig = {
 export default function Dashboard() {
   const [currentTimeHorizon, setCurrentTimeHorizon] = useState<string>("daily");
   const [limits, setLimits] = useState<ILimits | null>(null);
-  const [currentValues, setCurrentValues] = useState<ICurrentValues | null>(null);
+  const [currentValues, setCurrentValues] = useState<ICurrentValues | null>(
+    null
+  );
+  const [trends, setTrends] = useState<ITrends | null>(null);
+  const [openAlertModal, setOpenAlertModal] = useState<boolean>(false);
+  const [openFullScreenChart, setOpenFullScreenChart] =
+    useState<boolean>(false);
   const firstRender = useRef(true);
 
   const getLimits = async () => {
@@ -89,16 +100,36 @@ export default function Dashboard() {
     }
   };
 
+  const getTrends = async () => {
+    const tags = [
+      "GT_C_airOut_pressure",
+      "GT_C_airIn_pressure",
+      "HP_T_exit_pressure",
+      "GT_exhGas_pressure",
+    ];
+    try {
+      const response = await GetLatestValuesBetweenTimestamp(tags);
+
+      if (response) {
+        setTrends(response.data);
+      }
+    } catch (error) {
+      console.log("🚀 ~ file: index.tsx:97 ~ getTrends ~ error:", error);
+    }
+  };
+
   useEffect(() => {
     getLimits();
     getCurrentValues();
+    getTrends();
 
     const interval = setInterval(() => {
       getLimits();
-      getCurrentValues()
-    }, 180000)
+      getCurrentValues();
+      getTrends();
+    }, 180000);
 
-    return () => clearInterval(interval)
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -136,7 +167,7 @@ export default function Dashboard() {
         <HeaderTitle>
           {`Dashboard - Navy CODLAG Fragate Ship > Sistema de Propulsão`}
         </HeaderTitle>
-        <Infos>
+        <Infos onClick={() => setOpenAlertModal(true)}>
           <InfosAlerts>
             <span
               style={{
@@ -215,7 +246,12 @@ export default function Dashboard() {
                       <Thick label="Controle de Injeção da Turbina" />
                       <Gauge
                         value={currentValues?.T_inj_control as number}
-                        config={{ ...gaugeConfig, unit: "%", yAxisMax: (limits?.gauges?.max_inj_control as number) * 1.2 }}
+                        config={{
+                          ...gaugeConfig,
+                          unit: "%",
+                          yAxisMax:
+                            (limits?.gauges?.max_inj_control as number) * 1.2,
+                        }}
                         showDataLabels
                       />
                     </ShipFlowItem>
@@ -224,7 +260,12 @@ export default function Dashboard() {
                       <Thick label="Fluxo de Combustível" />
                       <Gauge
                         value={currentValues?.fuel_flow as number}
-                        config={{ ...gaugeConfig, unit: "kg/s", yAxisMax: (limits?.gauges?.max_fuel_flow as number) * 1.2 }}
+                        config={{
+                          ...gaugeConfig,
+                          unit: "kg/s",
+                          yAxisMax:
+                            (limits?.gauges?.max_fuel_flow as number) * 1.2,
+                        }}
                         showDataLabels
                       />
                     </ShipFlowItem>
@@ -291,9 +332,19 @@ export default function Dashboard() {
 
             <BottomMainRight>
               <Card height="100%">
-                <div style={{ width: "100%", padding: 12 }}>
-                  <ShipDetail currentValues={currentValues} limits={limits} />
+                <div style={{ width: "100%" }}>
+                  <ShipDetail
+                    currentValues={currentValues}
+                    limits={limits}
+                    trends={trends}
+                  />
                 </div>
+
+                {/* <div>
+                  <div>
+                    <LineChart data={trends?.GT_C_airOut_pressure as number[][]} />
+                  </div>
+                </div> */}
               </Card>
             </BottomMainRight>
           </BottomMain>
@@ -314,7 +365,12 @@ export default function Dashboard() {
                 <Thick label="Velocidade do Navio" />
                 <Gauge
                   value={currentValues?.ship_speed as number}
-                  config={{ ...gaugeConfig, unit: "nós", width: 250, yAxisMax: 27*1.2 }}
+                  config={{
+                    ...gaugeConfig,
+                    unit: "nós",
+                    width: 250,
+                    yAxisMax: 27 * 1.2,
+                  }}
                   showDataLabels
                 />
               </div>
@@ -332,6 +388,7 @@ export default function Dashboard() {
                     border: "1px solid",
                     borderRadius: 16,
                     margin: "40px auto 10px",
+                    zIndex: 0
                   }}
                 />
 
@@ -422,6 +479,18 @@ export default function Dashboard() {
           </AsideDashBottom>
         </AsideDash>
       </Dash>
+
+      {openAlertModal && (
+        <Overlay>
+          <Modal>Alert Modal</Modal>
+        </Overlay>
+      )}
+
+      {openFullScreenChart && (
+        <Overlay>
+          <Modal>FullScreen Gráficos</Modal>
+        </Overlay>
+      )}
     </Container>
   );
 }

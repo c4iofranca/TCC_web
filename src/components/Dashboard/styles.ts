@@ -171,3 +171,23 @@ export const Divider = styled.div`
   border-bottom-color: grey;
   opacity: 0.5;
 `;
+
+export const Overlay = styled.div`
+  top: 0;
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4.5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Modal = styled.div`
+  width: 480px;
+  background: ${colors.BLUE_SYSTEM};
+  padding: 32px;
+  border-radius: 18px;
+`;

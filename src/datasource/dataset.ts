@@ -2,7 +2,7 @@ import { GET_LATEST_VALUES_BY_TIMESTAMP } from "./../constants/Endpoints";
 import { API } from "./baseAPI";
 
 import * as Endpoints from "../constants/Endpoints";
-import { GLOBAL_END_DATE, GLOBAL_START_DATE } from "../constants/Global";
+import { GLOBAL_END_DATE, GLOBAL_MAIN_DATE, GLOBAL_START_DATE } from "../constants/Global";
 
 export const GetLatestValuesByTimestamp = async (tags: string[]) => {
   const body = {
@@ -28,6 +28,7 @@ export const GetLatestValuesBetweenTimestamp = async (tags: string[]) => {
     tags,
     startDate: GLOBAL_START_DATE,
     endDate: GLOBAL_END_DATE,
+    mainDate: GLOBAL_MAIN_DATE
   };
   try {
     const data = await API(Endpoints.API_ENDPOINT).post(

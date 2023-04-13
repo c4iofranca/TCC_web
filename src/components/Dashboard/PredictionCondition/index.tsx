@@ -31,9 +31,9 @@ export default function PredictionCondition() {
             <span>Compressor da Turbina a Gás (GT)</span>
             {/* <Gauge config={gaugeConfig} value={0.951} /> */}
           </div>
-          <div style={{ display: "flex" }}>
-            <LineChart data={compressorData} />
-            <div
+          <div style={{ display: "flex", flex: 1, width: '100%' }}>
+            {/* <LineChart width={570} data={compressorData} /> */}
+            {/* <div
               style={{
                 border: "1px solid rgb(230, 230, 230)",
                 marginLeft: -11,
@@ -60,7 +60,7 @@ export default function PredictionCondition() {
                   left: -8,
                 }}
               />
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -77,9 +77,9 @@ export default function PredictionCondition() {
             <span>Turbina a Gás (GT)</span>
             {/* <Gauge config={gaugeConfig} value={0.987} /> */}
           </div>
-          <div style={{ display: "flex" }}>
-            <LineChart data={turbineData} />
-            <div
+          <div style={{ display: "flex", flex: 1, width: '100%' }}>
+            {/* <LineChart width={570} data={turbineData} /> */}
+            {/* <div
               style={{
                 border: "1px solid rgb(230, 230, 230)",
                 marginLeft: -11,
@@ -106,7 +106,7 @@ export default function PredictionCondition() {
                   left: -8,
                 }}
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </ChartContainer>
@@ -118,6 +118,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 12px;
+  width: 100%
 `;
 
 const ChartContainer = styled.div`
