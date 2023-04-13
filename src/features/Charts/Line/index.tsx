@@ -7,25 +7,15 @@ interface ILineChartOptions {
   data: number[][];
   height?: number;
   width?: number | string;
+  title?: string;
+  showXAxis?: boolean;
 }
 
 Highcharts.setOptions({
   colors: colors.colors,
 });
 
-export default function LineChart({ data, height, width }: ILineChartOptions) {
-  // const [json, setJson] = useState<any>(null);
-
-  // useEffect(() => {
-  //   fetch(
-  //     "https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/large-dataset.json"
-  //   )
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       setJson(res);
-  //     });
-  // }, []);
-
+export default function LineChart({ data, height, width, showXAxis, title }: ILineChartOptions) {
   const options: Highcharts.Options = {
     chart: {
       backgroundColor: colors.TRANSPARENT,
@@ -37,7 +27,10 @@ export default function LineChart({ data, height, width }: ILineChartOptions) {
       width: width || 370
     },
     title: {
-      text: "",
+      text: title || "",
+      style: {
+        color: colors.WHITE
+      }
     },
     legend: {
       enabled: false,
@@ -47,7 +40,12 @@ export default function LineChart({ data, height, width }: ILineChartOptions) {
     },
     xAxis: {
       type: "datetime",
-      visible: false,
+      visible: Boolean(showXAxis) || false,
+      labels: {
+        style: {
+          color: colors.WHITE
+        }
+      }
     },
     yAxis: {
       title: {

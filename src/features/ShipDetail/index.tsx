@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SetStateAction, useState } from "react";
 import Gauge from "../Charts/Gauge";
 import Column from "../Charts/Column";
 import { IConfig } from "../../types/Gauge";
@@ -6,14 +6,17 @@ import { colors } from "../../theme/colors";
 import Thermometer from "../Thermometer";
 import { ILimits } from "../../types/Limits";
 import { ICurrentValues } from "../../types/CurrentValues";
-import { ITrends } from "../../types/Trends";
+import { ITrends, TrendsNames } from "../../types/Trends";
 import LineChart from "../Charts/Line";
 import Thick from "../Thick";
+import ExpandButton from "../../assets/icons/Expand";
 
 interface IShipDetail {
   limits: ILimits | null;
   currentValues: ICurrentValues | null;
   trends: ITrends | null;
+  handleOpenFullScreenModal: () => void;
+  handleDataFullScreen: (tag: TrendsNames) => void;
 }
 
 // RPM Gerador
@@ -37,7 +40,10 @@ export default function ShipDetail({
   currentValues,
   limits,
   trends,
+  handleDataFullScreen,
+  handleOpenFullScreenModal,
 }: IShipDetail) {
+  const [selectedTrend, setSelectedTrend] = useState<TrendsNames>();
   return (
     <svg
       width="1050"
@@ -45,7 +51,7 @@ export default function ShipDetail({
       viewBox="0 0 1003 335"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      style={{top: -40, position: 'relative'}}
+      style={{ top: -40, position: "relative" }}
     >
       <line
         x1="530.25"
@@ -174,12 +180,18 @@ export default function ShipDetail({
         />
       </foreignObject>
 
-      <text x={50} y={303} fill={colors.WHITE_SYSTEM} fontSize={12}>
+      <text x={50} y={295} fill={colors.WHITE_SYSTEM} fontSize={12}>
         Pressão de Entrada
       </text>
+      <foreignObject x={145} y={280} width={45} height={45}>
+        <ExpandButton
+          handleClick={handleOpenFullScreenModal}
+          tag="GT_C_airIn_pressure"
+          handleDataFullScreen={handleDataFullScreen}
+        />
+      </foreignObject>
       <foreignObject x={-10} y={290} width={220} height={120}>
         <div>
-          {/* <button>Expandir</button> */}
           <LineChart
             data={trends?.main?.GT_C_airIn_pressure as number[][]}
             height={120}
@@ -191,6 +203,13 @@ export default function ShipDetail({
       <text x={280} y={290} fill={colors.WHITE_SYSTEM} fontSize={12}>
         Pressão de Saída
       </text>
+      <foreignObject x={365} y={275} width={45} height={45}>
+        <ExpandButton
+          handleClick={handleOpenFullScreenModal}
+          tag="GT_C_airOut_pressure"
+          handleDataFullScreen={handleDataFullScreen}
+        />
+      </foreignObject>
       <foreignObject x={200} y={290} width={220} height={120}>
         <div>
           <LineChart
@@ -200,11 +219,27 @@ export default function ShipDetail({
           />
         </div>
       </foreignObject>
-      <line stroke="#263853" opacity={0.5} strokeWidth={2} x1={440} x2={440} y1={'100%'} y2={0} strokeDasharray={4}  />
+      <line
+        stroke="#263853"
+        opacity={0.5}
+        strokeWidth={2}
+        x1={440}
+        x2={440}
+        y1={"100%"}
+        y2={0}
+        strokeDasharray={4}
+      />
 
       <text x={505} y={290} fill={colors.WHITE_SYSTEM} fontSize={12}>
         Pressão de Saída
       </text>
+      <foreignObject x={590} y={275} width={45} height={45}>
+        <ExpandButton
+          handleClick={handleOpenFullScreenModal}
+          tag="HP_T_exit_pressure"
+          handleDataFullScreen={handleDataFullScreen}
+        />
+      </foreignObject>
       <foreignObject x={433} y={290} width={220} height={120}>
         <div>
           <LineChart
@@ -214,13 +249,35 @@ export default function ShipDetail({
           />
         </div>
       </foreignObject>
-      <line stroke="#263853" opacity={0.5} strokeWidth={2} x1={646} x2={646} y1={'100%'} y2={0} strokeDasharray={4}  />
+      <line
+        stroke="#263853"
+        opacity={0.5}
+        strokeWidth={2}
+        x1={646}
+        x2={646}
+        y1={"100%"}
+        y2={0}
+        strokeDasharray={4}
+      />
 
-      <text x={725} y={310} fill={colors.WHITE_SYSTEM} fontSize={12} >Pressão de Exaustão</text>
+      <text x={705} y={310} fill={colors.WHITE_SYSTEM} fontSize={12}>
+        Pressão de Exaustão
+      </text>
+      <foreignObject x={810} y={295} width={45} height={45}>
+        <ExpandButton
+          handleClick={handleOpenFullScreenModal}
+          tag="GT_exhGas_pressure"
+          handleDataFullScreen={handleDataFullScreen}
+        />
+      </foreignObject>
       <foreignObject x={650} y={310} width={220} height={100}>
-       <div>
-        <LineChart data={trends?.main?.GT_exhGas_pressure as number[][]} height={100} width={220} />
-       </div>
+        <div>
+          <LineChart
+            data={trends?.main?.GT_exhGas_pressure as number[][]}
+            height={100}
+            width={220}
+          />
+        </div>
       </foreignObject>
 
       <foreignObject x={0} y={-20} width={130} height={28}>

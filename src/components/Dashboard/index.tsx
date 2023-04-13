@@ -17,6 +17,7 @@ import {
   InfosAlerts,
   MainDash,
   Modal,
+  ModalChartHeader,
   Overlay,
   ShipConfiguration,
   ShipFlowContainer,
@@ -45,8 +46,18 @@ import { ILimits } from "../../types/Limits";
 import { GetCurrentValues, GetLimits } from "../../datasource/dataset";
 import { ICurrentValues } from "../../types/CurrentValues";
 import { GetLatestValuesBetweenTimestamp } from "../../datasource/dataset";
-import { ITrends } from "../../types/Trends";
+import { ITrends, TrendsNames } from "../../types/Trends";
 import LineChart from "../../features/Charts/Line";
+import FullScreenChartModal from "../../features/FullScreenChartModal";
+import CloseButton from "../../assets/icons/Close";
+import { translateTimeHorizon } from "../../utils/translateTimeHorizon";
+
+const tagsDict: Record<TrendsNames, string> = {
+  GT_C_airIn_pressure: "Pressão de Entrada",
+  GT_C_airOut_pressure: "Pressão de Saída",
+  GT_exhGas_pressure: "Pressão de Exaustão",
+  HP_T_exit_pressure: "Pressão de Saída",
+};
 
 const gaugeConfig: IConfig = {
   height: (9 / 16) * 100 + "%",
@@ -74,6 +85,11 @@ export default function Dashboard() {
   const [openAlertModal, setOpenAlertModal] = useState<boolean>(false);
   const [openFullScreenChart, setOpenFullScreenChart] =
     useState<boolean>(false);
+  const [dataFullScreenChart, setDataFullScreenChart] = useState<
+    number[][] | undefined
+  >([]);
+  const [currentTagFullScreen, setCurrentTagFullScreen] =
+    useState<TrendsNames>();
   const firstRender = useRef(true);
 
   const getLimits = async () => {
@@ -108,7 +124,7 @@ export default function Dashboard() {
       "GT_exhGas_pressure",
     ];
     try {
-      const response = await GetLatestValuesBetweenTimestamp(tags);
+      const response = await GetLatestValuesBetweenTimestamp(tags, currentTimeHorizon);
 
       if (response) {
         setTrends(response.data);
@@ -116,6 +132,19 @@ export default function Dashboard() {
     } catch (error) {
       console.log("🚀 ~ file: index.tsx:97 ~ getTrends ~ error:", error);
     }
+  };
+
+  const handleOpenFullScreenModal = () => {
+    setOpenFullScreenChart(true);
+  };
+
+  const handleCloseFullScreenModal = () => {
+    setOpenFullScreenChart(false);
+  };
+
+  const handleDataFullScreen = (tag: TrendsNames) => {
+    setDataFullScreenChart(trends?.temporal?.[tag]);
+    setCurrentTagFullScreen(tag)
   };
 
   useEffect(() => {
@@ -160,6 +189,10 @@ export default function Dashboard() {
       return;
     }
   }, []);
+
+  useEffect(() => {
+    getTrends()
+  }, [currentTimeHorizon])
 
   return (
     <Container>
@@ -337,6 +370,8 @@ export default function Dashboard() {
                     currentValues={currentValues}
                     limits={limits}
                     trends={trends}
+                    handleOpenFullScreenModal={handleOpenFullScreenModal}
+                    handleDataFullScreen={handleDataFullScreen}
                   />
                 </div>
 
@@ -388,7 +423,7 @@ export default function Dashboard() {
                     border: "1px solid",
                     borderRadius: 16,
                     margin: "40px auto 10px",
-                    zIndex: 0
+                    zIndex: 0,
                   }}
                 />
 
@@ -488,7 +523,21 @@ export default function Dashboard() {
 
       {openFullScreenChart && (
         <Overlay>
-          <Modal>FullScreen Gráficos</Modal>
+          <Modal>
+            <ModalChartHeader>
+              <span>
+                Horizonte de Tempo: {translateTimeHorizon(currentTimeHorizon)}
+              </span>
+              <CloseButton
+                handleCloseFullScreenModal={handleCloseFullScreenModal}
+              />
+            </ModalChartHeader>
+
+            <FullScreenChartModal
+              data={dataFullScreenChart as number[][]}
+              title={tagsDict[currentTagFullScreen as TrendsNames]}
+            />
+          </Modal>
         </Overlay>
       )}
     </Container>

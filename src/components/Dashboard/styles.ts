@@ -186,8 +186,15 @@ export const Overlay = styled.div`
 `;
 
 export const Modal = styled.div`
-  width: 480px;
-  background: ${colors.BLUE_SYSTEM};
+  width: 80%;
+  height: 70%;
+  background: #06283f;
   padding: 32px;
   border-radius: 18px;
+`;
+
+export const ModalChartHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;

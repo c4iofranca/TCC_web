@@ -69,7 +69,7 @@ $TM-tooltipArrowHeight: 2.2;
 
   &:before {
     width: 100%;
-    height: $TM-bulbSize / 2 + $TM-borderSize;
+    height: calc($TM-bulbSize / 2) + $TM-borderSize;
     bottom: $TM-borderSize;
     background: $TM-backgroundColor;
     z-index: -1;
