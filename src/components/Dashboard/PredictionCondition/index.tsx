@@ -1,18 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LineChart from "../../../features/Charts/Line";
 import Gauge from "../../../features/Charts/Gauge";
 import styled from "styled-components";
 import { IConfig } from "../../../types/Gauge";
 import { colors } from "../../../theme/colors";
+import { GetPredictOutputResults } from "../../../datasource/predict";
 
 export default function PredictionCondition() {
-  const [compressorData, setCompressorData] = useState<number[]>([
-    0.952, 0.951, 0.964, 0.954, 0.961, 0.971, 0.988, 0.981, 0.973, 0.952, 0.951,
-  ]);
-  const [turbineData, setTurbineData] = useState<number[]>([
-    0.9762, 0.977, 0.982, 0.961, 0.931, 0.988, 0.951, 0.988, 0.973, 0.952,
-    0.987,
-  ]);
+  const [compressorData, setCompressorData] = useState<number[][]>([]);
+  const [turbineData, setTurbineData] = useState<number[][]>([]);
+
+  const getTrends = async () => {
+    try {
+      const response = await GetPredictOutputResults();
+
+      if (response) {
+        const { y1, y2 } = response.data;
+
+        setCompressorData(y1);
+        setTurbineData(y2);
+      }
+    } catch (error) {
+      console.log("🚀 ~ file: index.tsx:21 ~ getTrends ~ error:", error);
+    }
+  };
+
+  useEffect(() => {
+    getTrends();
+  }, []);
+
+  const currentCompressorDataValue = compressorData?.[0]?.[1];
+  const currentTurbineDataValue = turbineData?.[0]?.[1];
+
+  console.log(currentCompressorDataValue, currentTurbineDataValue);
 
   return (
     <Container>
@@ -31,8 +51,8 @@ export default function PredictionCondition() {
             <span>Compressor da Turbina a Gás (GT)</span>
             {/* <Gauge config={gaugeConfig} value={0.951} /> */}
           </div>
-          <div style={{ display: "flex", flex: 1, width: '100%' }}>
-            {/* <LineChart width={570} data={compressorData} /> */}
+          <div style={{ display: "flex", flex: 1, width: "100%" }}>
+            <LineChart width={570} data={compressorData} />
             {/* <div
               style={{
                 border: "1px solid rgb(230, 230, 230)",
@@ -77,8 +97,8 @@ export default function PredictionCondition() {
             <span>Turbina a Gás (GT)</span>
             {/* <Gauge config={gaugeConfig} value={0.987} /> */}
           </div>
-          <div style={{ display: "flex", flex: 1, width: '100%' }}>
-            {/* <LineChart width={570} data={turbineData} /> */}
+          <div style={{ display: "flex", flex: 1, width: "100%" }}>
+            <LineChart width={570} data={turbineData} />
             {/* <div
               style={{
                 border: "1px solid rgb(230, 230, 230)",
@@ -93,7 +113,7 @@ export default function PredictionCondition() {
               }}
             >
               <div
-                style={{ height: "85%", background: "#298FE6", width: "100%" }}
+                style={{ height: "82%", background: "#298FE6", width: "100%" }}
               />
               <div
                 style={{
@@ -118,7 +138,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 12px;
-  width: 100%
+  width: 100%;
 `;
 
 const ChartContainer = styled.div`

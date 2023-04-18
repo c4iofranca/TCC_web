@@ -1,0 +1,6 @@
+@import "../../../node_modules/ol/ol.css";
+
+.ol-viewport {
+  height: 100%;
+  border-radius: 16px;
+}

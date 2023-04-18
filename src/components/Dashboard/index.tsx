@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AsideDash,
   AsideDashBottom,
@@ -32,7 +32,6 @@ import {
 } from "./styles";
 import { Card } from "../../features/Card";
 import PredictionCondition from "./PredictionCondition";
-import L from "leaflet";
 import Column from "../../features/Charts/Column";
 import Thick from "../../features/Thick";
 import { colors } from "../../theme/colors";
@@ -47,10 +46,22 @@ import { GetCurrentValues, GetLimits } from "../../datasource/dataset";
 import { ICurrentValues } from "../../types/CurrentValues";
 import { GetLatestValuesBetweenTimestamp } from "../../datasource/dataset";
 import { ITrends, TrendsNames } from "../../types/Trends";
-import LineChart from "../../features/Charts/Line";
 import FullScreenChartModal from "../../features/FullScreenChartModal";
 import CloseButton from "../../assets/icons/Close";
 import { translateTimeHorizon } from "../../utils/translateTimeHorizon";
+import Map from "ol/Map.js";
+import View from "ol/View.js";
+import "./styles.css";
+import { fromLonLat } from "ol/proj.js";
+import { Point } from "ol/geom";
+import { Vector } from "ol/layer.js";
+import { OSM, Vector as VectorSource } from "ol/source.js";
+import { Feature } from "ol";
+import VectorLayer from "ol/layer/Vector";
+import TileLayer from "ol/layer/Tile";
+import Fill from "ol/style/Fill";
+import Style from "ol/style/Style";
+import GeoJSON from "ol/format/GeoJSON.js";
 
 const tagsDict: Record<TrendsNames, string> = {
   GT_C_airIn_pressure: "Pressão de Entrada",
@@ -124,7 +135,10 @@ export default function Dashboard() {
       "GT_exhGas_pressure",
     ];
     try {
-      const response = await GetLatestValuesBetweenTimestamp(tags, currentTimeHorizon);
+      const response = await GetLatestValuesBetweenTimestamp(
+        tags,
+        currentTimeHorizon
+      );
 
       if (response) {
         setTrends(response.data);
@@ -144,7 +158,7 @@ export default function Dashboard() {
 
   const handleDataFullScreen = (tag: TrendsNames) => {
     setDataFullScreenChart(trends?.temporal?.[tag]);
-    setCurrentTagFullScreen(tag)
+    setCurrentTagFullScreen(tag);
   };
 
   useEffect(() => {
@@ -161,29 +175,94 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
+  // useEffect(() => {
+  //   if (firstRender.current) {
+  //     const map = L.map("map").setView([51.505, -0.09], 6);
+  //     L.tileLayer(
+  //       "https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png",
+  //       {
+  //         maxZoom: 8,
+  //         minZoom: 6,
+  //       }
+  //     ).addTo(map);
+
+  //     L.circle([51.508, -0.11], {
+  //       color: "#2A96F1",
+  //       fillColor: "#2A96F1",
+  //       fillOpacity: 1,
+  //       radius: 2000,
+  //     }).addTo(map);
+  //     L.circle([51.508, -0.11], {
+  //       color: "#2EE4F4",
+  //       fillColor: "#2EE4F4",
+  //       fillOpacity: 0.3,
+  //       radius: 22000,
+  //     }).addTo(map);
+
+  //     firstRender.current = false;
+  //     return;
+  //   }
+  // }, []);
+
   useEffect(() => {
     if (firstRender.current) {
-      const map = L.map("map").setView([51.505, -0.09], 6);
-      L.tileLayer(
-        "https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png",
-        {
-          maxZoom: 8,
-          minZoom: 6,
-        }
-      ).addTo(map);
+      const place = [-43.1699, -22.91947];
+      const style = new Style({
+        fill: new Fill({
+          color: "#B1B3B3",
+        }),
+      });
 
-      L.circle([51.508, -0.11], {
-        color: "#2A96F1",
-        fillColor: "#2A96F1",
-        fillOpacity: 1,
-        radius: 2000,
-      }).addTo(map);
-      L.circle([51.508, -0.11], {
-        color: "#2EE4F4",
-        fillColor: "#2EE4F4",
-        fillOpacity: 0.3,
-        radius: 22000,
-      }).addTo(map);
+      const vectorLayer = new VectorLayer({
+        background: "#1F2940",
+        source: new VectorSource({
+          url: "https://openlayers.org/data/vector/ecoregions.json",
+          format: new GeoJSON(),
+        }),
+        style: function (feature) {
+          const color = "#B1B3B3";
+          style.getFill().setColor(color);
+          return style;
+        },
+      });
+
+      new Map({
+        view: new View({
+          center: fromLonLat(place),
+          zoom: 2.5,
+          maxZoom: 4,
+        }),
+        layers: [
+          vectorLayer,
+          new Vector({
+            source: new VectorSource({
+              features: [
+                new Feature({
+                  geometry: new Point(fromLonLat(place)),
+                }),
+              ],
+            }),
+            style: {
+              "circle-radius": 4,
+              "circle-fill-color": "#2EE4F4",
+            },
+          }),
+          new Vector({
+            source: new VectorSource({
+              features: [
+                new Feature({
+                  geometry: new Point(fromLonLat(place)),
+                }),
+              ],
+            }),
+            style: {
+              "circle-radius": 18,
+              "circle-fill-color": "#2a96f133",
+            },
+          }),
+        ],
+        target: "map",
+      });
 
       firstRender.current = false;
       return;
@@ -191,8 +270,10 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    getTrends()
-  }, [currentTimeHorizon])
+    getTrends();
+  }, [currentTimeHorizon]);
+
+  
 
   return (
     <Container>

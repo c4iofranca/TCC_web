@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         background-attachment: fixed;
-        background-color: #011018;
+        background-color: #141B2D;
         font-family: Open-Sans, Arial, Helvetica, sans-serif, sans-serif;
         height: 100vh;
         color: white;
