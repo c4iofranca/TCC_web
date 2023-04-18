@@ -230,7 +230,7 @@ export default function Dashboard() {
         view: new View({
           center: fromLonLat(place),
           zoom: 2.5,
-          maxZoom: 4,
+          maxZoom: 5.5,
         }),
         layers: [
           vectorLayer,
