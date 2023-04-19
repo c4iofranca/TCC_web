@@ -42,7 +42,11 @@ import { IConfig } from "../../types/Gauge";
 import Gauge from "../../features/Charts/Gauge";
 import ShipDetail from "../../features/ShipDetail";
 import { ILimits } from "../../types/Limits";
-import { GetCurrentValues, GetLimits } from "../../datasource/dataset";
+import {
+  GetCurrentValues,
+  GetLimits,
+  GetTotalFuelFlow,
+} from "../../datasource/dataset";
 import { ICurrentValues } from "../../types/CurrentValues";
 import { GetLatestValuesBetweenTimestamp } from "../../datasource/dataset";
 import { ITrends, TrendsNames } from "../../types/Trends";
@@ -55,13 +59,14 @@ import "./styles.css";
 import { fromLonLat } from "ol/proj.js";
 import { Point } from "ol/geom";
 import { Vector } from "ol/layer.js";
-import { OSM, Vector as VectorSource } from "ol/source.js";
+import { Vector as VectorSource } from "ol/source.js";
 import { Feature } from "ol";
 import VectorLayer from "ol/layer/Vector";
-import TileLayer from "ol/layer/Tile";
 import Fill from "ol/style/Fill";
 import Style from "ol/style/Style";
 import GeoJSON from "ol/format/GeoJSON.js";
+import calculateHoursTraveled from "../../utils/calculateHoursTraveled";
+import { DataColumn, ITotalFuelFlow } from "../../types/TotalFuelFlow";
 
 const tagsDict: Record<TrendsNames, string> = {
   GT_C_airIn_pressure: "Pressão de Entrada",
@@ -101,6 +106,7 @@ export default function Dashboard() {
   >([]);
   const [currentTagFullScreen, setCurrentTagFullScreen] =
     useState<TrendsNames>();
+  const [fuelFlowInfo, setFuelFlowInfo] = useState<ITotalFuelFlow | null>(null);
   const firstRender = useRef(true);
 
   const getLimits = async () => {
@@ -148,6 +154,18 @@ export default function Dashboard() {
     }
   };
 
+  const getFuelFlowInfo = async () => {
+    try {
+      const response = await GetTotalFuelFlow();
+
+      if (response) {
+        setFuelFlowInfo(response.data);
+      }
+    } catch (error) {
+      console.log("🚀 ~ file: index.tsx:156 ~ getFuelFlowInfo ~ error:", error);
+    }
+  };
+
   const handleOpenFullScreenModal = () => {
     setOpenFullScreenChart(true);
   };
@@ -165,44 +183,17 @@ export default function Dashboard() {
     getLimits();
     getCurrentValues();
     getTrends();
+    getFuelFlowInfo()
 
     const interval = setInterval(() => {
       getLimits();
       getCurrentValues();
       getTrends();
+      getFuelFlowInfo()
     }, 180000);
 
     return () => clearInterval(interval);
   }, []);
-
-  // useEffect(() => {
-  //   if (firstRender.current) {
-  //     const map = L.map("map").setView([51.505, -0.09], 6);
-  //     L.tileLayer(
-  //       "https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png",
-  //       {
-  //         maxZoom: 8,
-  //         minZoom: 6,
-  //       }
-  //     ).addTo(map);
-
-  //     L.circle([51.508, -0.11], {
-  //       color: "#2A96F1",
-  //       fillColor: "#2A96F1",
-  //       fillOpacity: 1,
-  //       radius: 2000,
-  //     }).addTo(map);
-  //     L.circle([51.508, -0.11], {
-  //       color: "#2EE4F4",
-  //       fillColor: "#2EE4F4",
-  //       fillOpacity: 0.3,
-  //       radius: 22000,
-  //     }).addTo(map);
-
-  //     firstRender.current = false;
-  //     return;
-  //   }
-  // }, []);
 
   useEffect(() => {
     if (firstRender.current) {
@@ -273,8 +264,6 @@ export default function Dashboard() {
     getTrends();
   }, [currentTimeHorizon]);
 
-  
-
   return (
     <Container>
       <Header>
@@ -329,7 +318,7 @@ export default function Dashboard() {
                   <CategoryLabel>Características do Navio</CategoryLabel>
                   {shipDetails.map((detail) => {
                     return (
-                      <SubCategoryLabel>
+                      <SubCategoryLabel key={detail.name}>
                         <Value defineWidth>{detail.name}:</Value>
                         <Value>{detail.value}</Value>
                       </SubCategoryLabel>
@@ -339,7 +328,7 @@ export default function Dashboard() {
                   <CategoryLabel>Sistema de Propulsão</CategoryLabel>
                   {systemDetails.map((detail) => {
                     return (
-                      <SubCategoryLabel>
+                      <SubCategoryLabel key={detail.name}>
                         <Value defineWidth>{detail.name}:</Value>
                         <Value>{detail.value}</Value>
                       </SubCategoryLabel>
@@ -406,7 +395,7 @@ export default function Dashboard() {
                     <span
                       style={{ textAlign: "center", padding: 12, fontSize: 24 }}
                     >
-                      310 kT
+                      {fuelFlowInfo?.totalLoad || "-"}
                     </span>
                   </div>
 
@@ -418,8 +407,8 @@ export default function Dashboard() {
                       flexDirection: "column",
                     }}
                   >
-                    <CategoryLabel>Consumo Mensal</CategoryLabel>
-                    <Column />
+                    <CategoryLabel>Consumo Periódico</CategoryLabel>
+                    <Column data={fuelFlowInfo?.data as DataColumn[]} />
                   </div>
 
                   <div
@@ -437,7 +426,7 @@ export default function Dashboard() {
                     </SubCategoryLabel>
                     <SubCategoryLabel>
                       <Value defineWidth>Horas no Mar:</Value>
-                      <Value>600h</Value>
+                      <Value>{calculateHoursTraveled()}</Value>
                     </SubCategoryLabel>
                   </div>
                 </ShipConfiguration>
@@ -455,12 +444,6 @@ export default function Dashboard() {
                     handleDataFullScreen={handleDataFullScreen}
                   />
                 </div>
-
-                {/* <div>
-                  <div>
-                    <LineChart data={trends?.GT_C_airOut_pressure as number[][]} />
-                  </div>
-                </div> */}
               </Card>
             </BottomMainRight>
           </BottomMain>

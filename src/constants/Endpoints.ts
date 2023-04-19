@@ -9,3 +9,4 @@ export const GET_LATEST_VALUES_BETWEEN_TIMESTAMP = '/dataset/latest/multiple';
 export const GET_PREDICT_OUTPUTS = '/predict';
 export const GET_LIMITS = '/dataset/limits';
 export const GET_CURRENT_VALUES = '/dataset/currentValues';
+export const GET_TOTAL_FUEL_FLOW = '/dataset/total_flue_flow'

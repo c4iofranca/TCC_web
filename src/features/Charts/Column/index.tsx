@@ -2,12 +2,17 @@ import React from "react";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { colors } from "../../../theme/colors";
+import { DataColumn } from "../../../types/TotalFuelFlow";
+
+interface IColumnChart {
+  data: DataColumn[];
+}
 
 Highcharts.setOptions({
   colors: colors.colors,
 });
 
-export default function Column() {
+export default function Column({ data }: IColumnChart) {
   const options: Highcharts.Options = {
     chart: {
       type: "column",
@@ -16,7 +21,7 @@ export default function Column() {
       plotBackgroundImage: colors.TRANSPARENT,
       plotBorderWidth: 0,
       plotShadow: false,
-      height: (9 / 16) * 100 + '%'
+      height: (9 / 16) * 100 + "%",
     },
     title: {
       text: "",
@@ -33,9 +38,9 @@ export default function Column() {
       gridLineWidth: 0.5,
       labels: {
         style: {
-            color: colors.WHITE
-        }
-      }
+          color: colors.WHITE,
+        },
+      },
     },
     plotOptions: {
       column: {
@@ -45,14 +50,25 @@ export default function Column() {
     },
     series: [
       {
-        name: "Tokyo",
-        data: [
-          49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1,
-          95.6, 54.4,
-        ],
+        name: "Consumo de Combustível",
+        data: data?.map((d) => {
+          return Math.round(d.intervalSum);
+        }),
         type: "column",
       },
     ],
+    tooltip: {
+      formatter: function () {
+        const column = data[this.x as number];
+        return `
+        Timestamp: ${new Date(
+          column.initialDate
+        ).toLocaleString()} - ${new Date(
+          column.finalDate
+        ).toLocaleString()} </br>
+        ${this.series.name}: <b>${this.y}</b> T`;
+      },
+    },
     legend: {
       enabled: false,
     },

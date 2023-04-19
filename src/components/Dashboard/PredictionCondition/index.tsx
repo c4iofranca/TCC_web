@@ -32,8 +32,6 @@ export default function PredictionCondition() {
   const currentCompressorDataValue = compressorData?.[0]?.[1];
   const currentTurbineDataValue = turbineData?.[0]?.[1];
 
-  console.log(currentCompressorDataValue, currentTurbineDataValue);
-
   return (
     <Container>
       <h3>Coeficiente do Estado de Degradação</h3>
