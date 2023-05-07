@@ -14,7 +14,10 @@ export const Header = styled.div`
   align-content: center;
 `;
 
-export const HeaderTitle = styled.div``;
+export const HeaderTitle = styled.div`
+  padding-top: 12px;
+  padding-bottom: 8px;  
+`;
 
 export const Infos = styled.div`
   display: flex;
@@ -56,7 +59,7 @@ export const Dash = styled.div`
   flex: 1;
   margin-top: 8px;
   display: flex;
-  gap: 12px;
+  gap: 24px;
 `;
 
 export const MainDash = styled.div`
@@ -64,14 +67,14 @@ export const MainDash = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 24px;
 `;
 
 export const UpperMain = styled.div`
   flex: 1;
   display: flex;
   width: 100%;
-  gap: 12px;
+  gap: 24px;
   position: relative;
 `;
 
@@ -92,13 +95,13 @@ export const UpperMainRight = styled.div`
   flex: 4;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 24px;
 `;
 
 export const UpperMainRightTop = styled.div`
   flex: 1;
   display: flex;
-  gap: 12px;
+  gap: 24px;
 `;
 
 export const ShipFlowContainer = styled.div``;
@@ -117,7 +120,7 @@ export const BottomMain = styled.div`
   display: flex;
   width: 100%;
   position: relative;
-  gap: 12px;
+  gap: 24px;
 `;
 
 export const BottomMainLeft = styled.div`
@@ -131,7 +134,7 @@ export const AsideDash = styled.div`
   width: 30%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 24px;
 `;
 
 export const AsideDashTop = styled.div`
@@ -185,9 +188,9 @@ export const Overlay = styled.div`
   align-items: center;
 `;
 
-export const Modal = styled.div`
-  width: 80%;
-  height: 70%;
+export const Modal = styled.div.attrs((props: { width: string, height: string }) => props)`
+  width: ${(props) => props.width ? props.width : '80%'};
+  height: ${(props) => props.height ? props.height : '70%'};
   background: #06283f;
   padding: 32px;
   border-radius: 18px;

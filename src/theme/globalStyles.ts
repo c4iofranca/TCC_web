@@ -14,6 +14,18 @@ const GlobalStyle = createGlobalStyle`
         text-align: center;
         
     }    
+
+    ::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: #81858D;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #009EE0;
+    }
 `;
 
 export default GlobalStyle;

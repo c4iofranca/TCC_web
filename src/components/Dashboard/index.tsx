@@ -67,6 +67,7 @@ import Style from "ol/style/Style";
 import GeoJSON from "ol/format/GeoJSON.js";
 import calculateHoursTraveled from "../../utils/calculateHoursTraveled";
 import { DataColumn, ITotalFuelFlow } from "../../types/TotalFuelFlow";
+import Alerts from "../../features/Alerts";
 
 const tagsDict: Record<TrendsNames, string> = {
   GT_C_airIn_pressure: "Pressão de Entrada",
@@ -422,7 +423,7 @@ export default function Dashboard() {
                     <CategoryLabel>Navegação</CategoryLabel>
                     <SubCategoryLabel>
                       <Value defineWidth>Milhas Viajadas:</Value>
-                      <Value>160 milhas</Value>
+                      <Value>{fuelFlowInfo?.miles || 0} milhas</Value>
                     </SubCategoryLabel>
                     <SubCategoryLabel>
                       <Value defineWidth>Horas no Mar:</Value>
@@ -581,7 +582,9 @@ export default function Dashboard() {
 
       {openAlertModal && (
         <Overlay>
-          <Modal>Alert Modal</Modal>
+          <Modal width="35%" height="40%">
+            <Alerts onClose={() => setOpenAlertModal(false)} />
+          </Modal>
         </Overlay>
       )}
 
@@ -593,7 +596,7 @@ export default function Dashboard() {
                 Horizonte de Tempo: {translateTimeHorizon(currentTimeHorizon)}
               </span>
               <CloseButton
-                handleCloseFullScreenModal={handleCloseFullScreenModal}
+                handleClose={handleCloseFullScreenModal}
               />
             </ModalChartHeader>
 

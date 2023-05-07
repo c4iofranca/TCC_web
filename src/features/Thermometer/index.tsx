@@ -20,6 +20,7 @@ export default function Thermometer({ value, max, min = 0 }: IThermometer) {
         ></div>
         <div id="graduations"></div>
       </div>
+      <span style={{fontSize: 11, zIndex: 1, marginTop: -27}}>{value?.toFixed(0)}</span>
     </div>
   );
 }

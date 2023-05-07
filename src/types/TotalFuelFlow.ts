@@ -7,6 +7,7 @@ interface DataColumn {
 interface ITotalFuelFlow {
   totalLoad: string;
   data: DataColumn[];
+  miles: string;
 }
 
 export type { ITotalFuelFlow, DataColumn };

@@ -3,14 +3,14 @@ import styled from "styled-components";
 import { colors } from "../../theme/colors";
 
 interface ICloseButton {
-  handleCloseFullScreenModal: () => void;
+  handleClose: () => void;
 }
 
 export default function CloseButton({
-  handleCloseFullScreenModal,
+  handleClose,
 }: ICloseButton) {
   return (
-    <Button onClick={handleCloseFullScreenModal}>
+    <Button onClick={handleClose}>
       <svg
         width="30"
         height="30"
