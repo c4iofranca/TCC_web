@@ -35,7 +35,7 @@ export default function Propeller({ color, label, value }: IPropeller) {
           </g>
         </g>
       </svg>
-      <span>{label}: {Number(value.toFixed(0))} kN</span>
+      <span>{label}: {Number(value?.toFixed(0))} kN</span>
     </div>
   );
 }
