@@ -26,6 +26,8 @@ export const ClosedAlerts = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  gap: 10px;
+  padding: 10px 0px;
 `;
 
 export const AlertCardContainer = styled.div`

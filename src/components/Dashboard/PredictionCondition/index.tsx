@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { IConfig } from "../../../types/Gauge";
 import { colors } from "../../../theme/colors";
 import { GetPredictOutputResults } from "../../../datasource/predict";
+import Thick from "../../../features/Thick";
 
 export default function PredictionCondition() {
   const [compressorData, setCompressorData] = useState<number[][]>([]);
@@ -46,11 +47,11 @@ export default function PredictionCondition() {
               justifyContent: "center",
             }}
           >
-            <span>Compressor da Turbina a Gás (GT)</span>
+            <span>Compressor da TG</span>
             {/* <Gauge config={gaugeConfig} value={0.951} /> */}
           </div>
           <div style={{ display: "flex", flex: 1, width: "100%" }}>
-            <LineChart width={360} data={compressorData} />
+            <LineChart width={360} data={compressorData} thresholdValue={0.98} />
             {/* <div
               style={{
                 border: "1px solid rgb(230, 230, 230)",
@@ -92,11 +93,11 @@ export default function PredictionCondition() {
               justifyContent: "center",
             }}
           >
-            <span>Turbina a Gás (GT)</span>
+            <span>Turbina de Alta Pressão da TG</span>
             {/* <Gauge config={gaugeConfig} value={0.987} /> */}
           </div>
           <div style={{ display: "flex", flex: 1, width: "100%" }}>
-            <LineChart width={360} data={turbineData} />
+            <LineChart width={360} data={turbineData} thresholdValue={0.99} />
             {/* <div
               style={{
                 border: "1px solid rgb(230, 230, 230)",

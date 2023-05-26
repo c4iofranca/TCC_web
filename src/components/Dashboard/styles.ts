@@ -155,15 +155,18 @@ export const CategoryLabel = styled.p`
   padding-left: 12px;
 `;
 export const SubCategoryLabel = styled.p`
-  width: inherit;
+  width: 85%;
   text-align: initial;
   display: flex;
   padding-left: 20px;
+  justify-content: space-between;
 `;
 export const Value = styled.span.attrs(
   (props: { defineWidth?: boolean }) => props
 )`
   width: ${(props) => (props.defineWidth ? "50%" : "initial")};
+  color: #81858D
+
 `;
 
 export const Divider = styled.div`
@@ -191,7 +194,7 @@ export const Overlay = styled.div`
 export const Modal = styled.div.attrs((props: { width: string, height: string }) => props)`
   width: ${(props) => props.width ? props.width : '80%'};
   height: ${(props) => props.height ? props.height : '70%'};
-  background: #06283f;
+  background: rgb(20, 27, 45);
   padding: 32px;
   border-radius: 18px;
 `;

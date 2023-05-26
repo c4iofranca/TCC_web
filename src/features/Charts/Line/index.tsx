@@ -9,13 +9,14 @@ interface ILineChartOptions {
   width?: number | string;
   title?: string;
   showXAxis?: boolean;
+  thresholdValue?: number;
 }
 
 Highcharts.setOptions({
   colors: colors.colors,
 });
 
-export default function LineChart({ data, height, width, showXAxis, title }: ILineChartOptions) {
+export default function LineChart({ data, height, width, showXAxis, title, thresholdValue }: ILineChartOptions) {
   const options: Highcharts.Options = {
     chart: {
       backgroundColor: colors.TRANSPARENT,
@@ -57,6 +58,9 @@ export default function LineChart({ data, height, width, showXAxis, title }: ILi
         },
       },
       gridLineWidth: 0.5,
+      plotLines: thresholdValue ? [{
+        color: '#FF0000', width: 2, value: thresholdValue
+      }] : []
     },
     series: [
       {

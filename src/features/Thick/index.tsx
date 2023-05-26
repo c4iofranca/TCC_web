@@ -14,4 +14,5 @@ const Container = styled.div`
     top: 10px;
     border-left: 10px solid ${colors.BLUE_SYSTEM};
     padding-left: 10px;
+    min-width: 4px;
 `;

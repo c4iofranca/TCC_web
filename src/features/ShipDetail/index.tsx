@@ -100,7 +100,7 @@ export default function ShipDetail({
       </text>
       <foreignObject className="node" x={0} y={95} width={150} height={120}>
         <Gauge
-          value={currentValues?.GG_rpm as number}
+          value={Number(currentValues?.GG_rpm.toFixed(0)) as number}
           config={{
             ...gaugeConfig,
             unit: "rpm",
@@ -120,11 +120,8 @@ export default function ShipDetail({
         Entrada
       </text>
 
-      <text x={270} y={125} fontSize={12} fill={colors.WHITE_SYSTEM}>
-        Compressor GT
-      </text>
-      <text x={265} y={165} fontSize={12} fill={colors.WHITE_SYSTEM}>
-        Temperatura (ºC)
+      <text x={265} y={15} fontSize={18.72} fontWeight={"bold"} fill={colors.WHITE_SYSTEM}>
+        Turbina a Gás (Gerador de Gás e Turbina de Potência)
       </text>
 
       <foreignObject x={360} y={115} width={40} height={120}>
@@ -133,7 +130,7 @@ export default function ShipDetail({
           value={currentValues?.GT_C_airOut_temp as number}
         />
       </foreignObject>
-      <text x={360} y={225} fontSize={12} fill={colors.WHITE_SYSTEM}>
+      <text x={365} y={225} fontSize={12} fill={colors.WHITE_SYSTEM}>
         Saída
       </text>
 
@@ -150,12 +147,12 @@ export default function ShipDetail({
         Saída
       </text>
 
-      <text x={700} y={125} fontSize={12} fill={colors.WHITE_SYSTEM}>
-        Torque Turbina
+      <text x={690} y={125} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        Torque Turbina BP
       </text>
       <foreignObject className="node" x={665} y={95} width={150} height={120}>
         <Gauge
-          value={currentValues?.GT_shaft_torque as number}
+          value={Number(currentValues?.GT_shaft_torque.toFixed(0)) as number}
           config={{
             ...gaugeConfig,
             unit: "kN m",
@@ -165,12 +162,12 @@ export default function ShipDetail({
         />
       </foreignObject>
 
-      <text x={880} y={125} fontSize={12} fill={colors.WHITE_SYSTEM}>
-        RPM Turbina
+      <text x={873} y={125} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        RPM Turbina BP
       </text>
       <foreignObject className="node" x={840} y={95} width={150} height={120}>
         <Gauge
-          value={currentValues?.GT_rpm as number}
+          value={Number(currentValues?.GT_rpm.toFixed(0)) as number}
           config={{
             ...gaugeConfig,
             unit: "kN m",
@@ -200,10 +197,10 @@ export default function ShipDetail({
         </div>
       </foreignObject>
 
-      <text x={280} y={290} fill={colors.WHITE_SYSTEM} fontSize={12}>
-        Pressão de Saída
+      <text x={210} y={290} fill={colors.WHITE_SYSTEM} fontSize={12}>
+        Pressão de Saída do Compressor
       </text>
-      <foreignObject x={365} y={275} width={45} height={45}>
+      <foreignObject x={380} y={275} width={45} height={45}>
         <ExpandButton
           handleClick={handleOpenFullScreenModal}
           tag="GT_C_airOut_pressure"
@@ -230,10 +227,10 @@ export default function ShipDetail({
         strokeDasharray={4}
       />
 
-      <text x={505} y={290} fill={colors.WHITE_SYSTEM} fontSize={12}>
-        Pressão de Saída
+      <text x={445} y={290} fill={colors.WHITE_SYSTEM} fontSize={12}>
+        Pressão de Saída da Turbina AP
       </text>
-      <foreignObject x={590} y={275} width={45} height={45}>
+      <foreignObject x={615} y={275} width={45} height={45}>
         <ExpandButton
           handleClick={handleOpenFullScreenModal}
           tag="HP_T_exit_pressure"
@@ -280,12 +277,12 @@ export default function ShipDetail({
         </div>
       </foreignObject>
 
-      <foreignObject x={0} y={-20} width={140} height={28}>
+      {/* <foreignObject x={0} y={-20} width={140} height={28}>
         <Thick label="Gerador de Gás" />
       </foreignObject>
       <foreignObject x={646} y={-20} width={170} height={28}>
         <Thick label="Turbina de Potência" />
-      </foreignObject>
+      </foreignObject> */}
     </svg>
   );
 }

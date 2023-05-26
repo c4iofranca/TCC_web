@@ -15,6 +15,6 @@ const Container = styled.div`
   display: flex;
   gap: 12px;
   height: 96vh;
-  padding: 12px;
+  padding: 12px 24px;
 
 `

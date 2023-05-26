@@ -8,8 +8,8 @@ interface IPropeller {
 
 export default function Propeller({ color, label, value }: IPropeller) {
   return (
-    <div>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210.85 192.37" style={{margin: '20px 0 0 0'}}>
+    <div style={{display: 'flex', flexDirection: 'column'}}>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210.85 192.37" style={{margin: '20px 0 0 0'}} width={120} height={80}>
         <g id="Camada_2" data-name="Camada 2">
           <g id="Camada_1-2" data-name="Camada 1">
             <path
@@ -35,7 +35,7 @@ export default function Propeller({ color, label, value }: IPropeller) {
           </g>
         </g>
       </svg>
-      <span>{label}: {value} kN</span>
+      <span>{label}: {Number(value.toFixed(0))} kN</span>
     </div>
   );
 }

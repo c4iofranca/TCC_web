@@ -62,7 +62,7 @@ export default function Alerts({ onClose }: IAlertsProps) {
       <AlertsHistory>
         <ActiveAlerts style={{display: "flex", flexDirection: 'column', justifyContent: 'space-between', paddingBottom: 10}}>
           <div>
-            <div>
+            <div style={{ display: 'flex', flexDirection: 'column', marginBottom: 20}}>
               <span>Alerta Ativo do Compressor</span>
               {activeCompressorAlert ? (
                 <AlertCard>
@@ -76,7 +76,7 @@ export default function Alerts({ onClose }: IAlertsProps) {
               )}
             </div>
 
-            <div>
+            <div style={{ display: 'flex', flexDirection: 'column'}}>
               <span>Alerta Ativo da Turbina</span>
               {activeTurbineAlert ? (
                 <AlertCard>
