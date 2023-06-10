@@ -177,41 +177,43 @@ export default function ShipDetail({
         />
       </foreignObject>
 
-      <text x={50} y={295} fill={colors.WHITE_SYSTEM} fontSize={12}>
+      <text x={50} y={310} fill={colors.WHITE_SYSTEM} fontSize={12}>
         Pressão de Entrada
       </text>
-      <foreignObject x={145} y={280} width={45} height={45}>
+      <foreignObject x={145} y={295} width={45} height={45}>
         <ExpandButton
           handleClick={handleOpenFullScreenModal}
           tag="GT_C_airIn_pressure"
           handleDataFullScreen={handleDataFullScreen}
         />
       </foreignObject>
-      <foreignObject x={-10} y={290} width={220} height={100}>
+      <foreignObject x={-10} y={310} width={220} height={80}>
         <div>
           <LineChart
+            tickAmount={3}
             data={trends?.main?.GT_C_airIn_pressure as number[][]}
-            height={100}
+            height={80}
             width={220}
           />
         </div>
       </foreignObject>
 
-      <text x={210} y={290} fill={colors.WHITE_SYSTEM} fontSize={12}>
+      <text x={210} y={310} fill={colors.WHITE_SYSTEM} fontSize={12}>
         Pressão de Saída do Compressor
       </text>
-      <foreignObject x={380} y={275} width={45} height={45}>
+      <foreignObject x={380} y={295} width={45} height={45}>
         <ExpandButton
           handleClick={handleOpenFullScreenModal}
           tag="GT_C_airOut_pressure"
           handleDataFullScreen={handleDataFullScreen}
         />
       </foreignObject>
-      <foreignObject x={200} y={290} width={220} height={100}>
+      <foreignObject x={200} y={310} width={220} height={80}>
         <div>
           <LineChart
+            tickAmount={3}
             data={trends?.main?.GT_C_airOut_pressure as number[][]}
-            height={100}
+            height={80}
             width={220}
           />
         </div>
@@ -227,21 +229,22 @@ export default function ShipDetail({
         strokeDasharray={4}
       />
 
-      <text x={445} y={290} fill={colors.WHITE_SYSTEM} fontSize={12}>
+      <text x={445} y={310} fill={colors.WHITE_SYSTEM} fontSize={12}>
         Pressão de Saída da Turbina AP
       </text>
-      <foreignObject x={615} y={275} width={45} height={45}>
+      <foreignObject x={615} y={295} width={45} height={45}>
         <ExpandButton
           handleClick={handleOpenFullScreenModal}
           tag="HP_T_exit_pressure"
           handleDataFullScreen={handleDataFullScreen}
         />
       </foreignObject>
-      <foreignObject x={433} y={290} width={220} height={100}>
+      <foreignObject x={433} y={310} width={220} height={80}>
         <div>
           <LineChart
+            tickAmount={3}
             data={trends?.main?.HP_T_exit_pressure as number[][]}
-            height={100}
+            height={80}
             width={220}
           />
         </div>
@@ -270,6 +273,7 @@ export default function ShipDetail({
       <foreignObject x={650} y={310} width={220} height={80}>
         <div>
           <LineChart
+            tickAmount={3}
             data={trends?.main?.GT_exhGas_pressure as number[][]}
             height={80}
             width={220}

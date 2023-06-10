@@ -10,13 +10,14 @@ interface ILineChartOptions {
   title?: string;
   showXAxis?: boolean;
   thresholdValue?: number;
+  tickAmount: number;
 }
 
 Highcharts.setOptions({
   colors: colors.colors,
 });
 
-export default function LineChart({ data, height, width, showXAxis, title, thresholdValue }: ILineChartOptions) {
+export default function LineChart({ data, height, width, showXAxis, title, thresholdValue, tickAmount }: ILineChartOptions) {
   const options: Highcharts.Options = {
     chart: {
       backgroundColor: colors.TRANSPARENT,
@@ -52,6 +53,7 @@ export default function LineChart({ data, height, width, showXAxis, title, thres
       title: {
         text: "",
       },
+      tickAmount,
       labels: {
         style: {
           color: colors.WHITE,
@@ -59,7 +61,7 @@ export default function LineChart({ data, height, width, showXAxis, title, thres
       },
       gridLineWidth: 0.5,
       plotLines: thresholdValue ? [{
-        color: '#FF0000', width: 2, value: thresholdValue
+        color: '#fff', width: 2, value: thresholdValue, dashStyle: 'Dash'
       }] : []
     },
     series: [

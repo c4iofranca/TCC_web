@@ -126,7 +126,10 @@ export default function Dashboard() {
   const getCurrentValues = async () => {
     try {
       const response = await GetCurrentValues();
-      console.log("🚀 ~ file: index.tsx:129 ~ getCurrentValues ~ response:", response)
+      console.log(
+        "🚀 ~ file: index.tsx:129 ~ getCurrentValues ~ response:",
+        response
+      );
 
       if (response) {
         setCurrentValues(response.data);
@@ -281,7 +284,7 @@ export default function Dashboard() {
               viewBox="0 0 36 36"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               <path
                 d="M15.2135 4.86816C16.3682 2.86816 19.255 2.86816 20.4097 4.86816L30.2637 21.9359C31.4184 23.9359 29.975 26.4359 27.6656 26.4359H7.95753C5.64813 26.4359 4.20475 23.9359 5.35946 21.9359L15.2135 4.86816Z"
@@ -420,7 +423,11 @@ export default function Dashboard() {
                     <ShipFlowItem>
                       <Thick label="Controle de Injeção da Turbina" />
                       <Gauge
-                        value={Number(currentValues?.T_inj_control.toFixed(0)) as number}
+                        value={
+                          Number(
+                            currentValues?.T_inj_control.toFixed(0)
+                          ) as number
+                        }
                         config={{
                           ...gaugeConfig,
                           unit: "%",
@@ -434,7 +441,7 @@ export default function Dashboard() {
                     <ShipFlowItem>
                       <Thick label="Fluxo de Combustível" />
                       <Gauge
-                        value={(currentValues?.fuel_flow) as number}
+                        value={currentValues?.fuel_flow as number}
                         config={{
                           ...gaugeConfig,
                           unit: "kg/s",
@@ -525,26 +532,22 @@ export default function Dashboard() {
         <AsideDash>
           <AsideDashBottom>
             <Card>
-              <div
-                style={{
-                  flex: 1,
-                }}
-              >
-                <Thick label="Posição da Manete" />
-                <Manete value={currentValues?.lever_position as number} />
-              </div>
-              <div>
+              <div style={{ display: "flex", width: "100%" }}>
                 <Thick label="Velocidade do Navio" />
-                <Gauge
-                  value={currentValues?.ship_speed as number}
-                  config={{
-                    ...gaugeConfig,
-                    unit: "nós",
-                    width: 250,
-                    yAxisMax: 27 * 1.2,
-                  }}
-                  showDataLabels
-                />
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                  <Gauge
+                    value={currentValues?.ship_speed as number}
+                    config={{
+                      ...gaugeConfig,
+                      unit: "nós",
+                      width: 250,
+                      yAxisMax: 27 * 1.2,
+                      useThemeColor: false
+                      
+                    }}
+                    showDataLabels
+                  />
+                </div>
               </div>
             </Card>
           </AsideDashBottom>

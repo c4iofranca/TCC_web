@@ -58,7 +58,7 @@ export default function Gauge({ config, value, title, showDataLabels }: IGaugeOp
         {
           from: 0,
           to: config?.yAxisMax,
-          color: config?.useThemeColor ? colors.BLUE_SYSTEM : colors.regularValue,
+          color: config?.useThemeColor ? colors.BLUE_SYSTEM : '#fff',
           thickness: config?.thickness || 6,
         },
       ],

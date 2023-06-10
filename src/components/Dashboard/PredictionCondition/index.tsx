@@ -51,7 +51,7 @@ export default function PredictionCondition() {
             {/* <Gauge config={gaugeConfig} value={0.951} /> */}
           </div>
           <div style={{ display: "flex", flex: 1, width: "100%" }}>
-            <LineChart width={360} data={compressorData} thresholdValue={0.98} />
+            <LineChart width={360} data={compressorData} thresholdValue={0.98} tickAmount={6}/>
             {/* <div
               style={{
                 border: "1px solid rgb(230, 230, 230)",
@@ -97,7 +97,7 @@ export default function PredictionCondition() {
             {/* <Gauge config={gaugeConfig} value={0.987} /> */}
           </div>
           <div style={{ display: "flex", flex: 1, width: "100%" }}>
-            <LineChart width={360} data={turbineData} thresholdValue={0.99} />
+            <LineChart width={360} data={turbineData} thresholdValue={0.99} tickAmount={6}/>
             {/* <div
               style={{
                 border: "1px solid rgb(230, 230, 230)",
