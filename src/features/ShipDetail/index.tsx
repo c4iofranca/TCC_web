@@ -134,8 +134,8 @@ export default function ShipDetail({
         Saída
       </text>
 
-      <text x={270} y={120} fontSize={12} fill={colors.WHITE_SYSTEM}>
-        Compressor GT
+      <text x={280} y={120} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        Compressor
       </text>
       <text x={278} y={160} fontSize={12} fill={colors.WHITE_SYSTEM}>
         Temperatura
