@@ -201,6 +201,7 @@ export default function ShipDetail({
             data={trends?.main?.GT_C_airIn_pressure as number[][]}
             height={80}
             width={220}
+            unit="bar"
           />
         </div>
       </foreignObject>
@@ -222,6 +223,7 @@ export default function ShipDetail({
             data={trends?.main?.GT_C_airOut_pressure as number[][]}
             height={80}
             width={220}
+            unit="bar"
           />
         </div>
       </foreignObject>
@@ -253,6 +255,7 @@ export default function ShipDetail({
             data={trends?.main?.HP_T_exit_pressure as number[][]}
             height={80}
             width={220}
+            unit="bar"
           />
         </div>
       </foreignObject>
@@ -284,6 +287,7 @@ export default function ShipDetail({
             data={trends?.main?.GT_exhGas_pressure as number[][]}
             height={80}
             width={220}
+            unit="bar"
           />
         </div>
       </foreignObject>

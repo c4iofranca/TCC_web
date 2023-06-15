@@ -7,5 +7,5 @@ interface IFullScreenChartModal {
 }
 
 export default function FullScreenChartModal({ data, title }: IFullScreenChartModal) {
-  return <LineChart data={data} height={600} width={1500} title={title} showXAxis tickAmount={6}/>;
+  return <LineChart data={data} height={600} width={1500} title={title} showXAxis tickAmount={6} unit="bar"/>;
 }

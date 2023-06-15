@@ -11,13 +11,14 @@ interface ILineChartOptions {
   showXAxis?: boolean;
   thresholdValue?: number;
   tickAmount: number;
+  unit?: string;
 }
 
 Highcharts.setOptions({
   colors: colors.colors,
 });
 
-export default function LineChart({ data, height, width, showXAxis, title, thresholdValue, tickAmount }: ILineChartOptions) {
+export default function LineChart({ data, height, width, showXAxis, title, thresholdValue, tickAmount, unit }: ILineChartOptions) {
   const options: Highcharts.Options = {
     chart: {
       backgroundColor: colors.TRANSPARENT,
@@ -47,6 +48,13 @@ export default function LineChart({ data, height, width, showXAxis, title, thres
         style: {
           color: colors.WHITE
         }
+      }
+    },
+    tooltip: {
+      formatter: function () {
+        return `${new Date(this.x!).toLocaleString()}<br />` + 
+
+          `<strong>Value:</strong> ${this.y} ${unit || ''}`
       }
     },
     yAxis: {
