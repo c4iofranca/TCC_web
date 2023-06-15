@@ -134,6 +134,13 @@ export default function ShipDetail({
         Saída
       </text>
 
+      <text x={270} y={120} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        Compressor GT
+      </text>
+      <text x={278} y={160} fontSize={12} fill={colors.WHITE_SYSTEM}>
+        Temperatura
+      </text>
+
       <text x={542} y={100} fontSize={12} fill={colors.WHITE_SYSTEM}>
         Turbina AP
       </text>
@@ -225,7 +232,7 @@ export default function ShipDetail({
         x1={440}
         x2={440}
         y1={"100%"}
-        y2={0}
+        y2={30}
         strokeDasharray={4}
       />
 
@@ -256,7 +263,7 @@ export default function ShipDetail({
         x1={646}
         x2={646}
         y1={"100%"}
-        y2={0}
+        y2={30}
         strokeDasharray={4}
       />
 

@@ -70,7 +70,9 @@ export default function Gauge({ config, value, title, showDataLabels }: IGaugeOp
         data: [value],
         type: 'gauge',
         dataLabels: showDataLabels ? {
-
+          style: {
+            color: 'white'
+          },
           format: `{y} ${config?.unit}` || '',
           padding: 15,
           borderWidth: 0
