@@ -23,6 +23,7 @@ export const Infos = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  flex: 2;
 `;
 export const InfosButton = styled.button`
   padding: 4px;
@@ -35,6 +36,8 @@ export const InfosAlerts = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
+  flex: 2;
+  justify-content: flex-end;
 `;
 
 export const TimeHorizon = styled.div`

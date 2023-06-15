@@ -298,6 +298,8 @@ export default function Dashboard() {
             </svg>
             <span>Alertas</span>
           </InfosAlerts>
+
+          <div style={{ flex: 5}} />
         </Infos>
         <TimeHorizon>
           <ButtonTimeHorizon
